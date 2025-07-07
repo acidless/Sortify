@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+:root {
+    color: #fff;
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
+
+body {
+    background: #151515;
+}
+
+#root {
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+}
