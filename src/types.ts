@@ -1,0 +1,1 @@
+export type SampleArray = Array<{value: number, key: number}>;
