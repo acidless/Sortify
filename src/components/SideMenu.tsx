@@ -80,7 +80,7 @@ function SideMenu() {
                             </NavLink>
                         </li>
                         <li>
-                            <NavLink to="/merge-sort" className={({isActive}) =>
+                            <NavLink to="/djikstra" className={({isActive}) =>
                                 (isActive ? "text-green-400" : "") + " flex flex-col items-center"
                             }>
                                 <Route className="w-16 h-16"></Route>
@@ -99,7 +99,7 @@ function SideMenu() {
                             </NavLink>
                         </li>
                         <li>
-                            <NavLink to="/bfs" className={({isActive}) =>
+                            <NavLink to="/bst-insert" className={({isActive}) =>
                                 (isActive ? "text-green-400" : "") + " flex flex-col items-center"
                             }>
                                 <Plus className="w-16 h-16"></Plus>
@@ -107,7 +107,7 @@ function SideMenu() {
                             </NavLink>
                         </li>
                         <li>
-                            <NavLink to="/merge-sort" className={({isActive}) =>
+                            <NavLink to="/bst-delete" className={({isActive}) =>
                                 (isActive ? "text-green-400" : "") + " flex flex-col items-center"
                             }>
                                 <X className="w-16 h-16"></X>
