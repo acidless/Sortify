@@ -50,14 +50,19 @@ function InsertionSort() {
         }
     }
 
+    function nodeClassName(index: number) {
+        if(pivotIndex === index) return "border-green-400";
+        if(checkingIndex === index) return "border-yellow-400";
+    }
+
     return <SortingAlgorithm
+        name="Insertion Sort"
         algorithm={insertionSort}
         makeSnapshot={makeSnapshot}
         updateData={updateData}
         setAlgorithmState={setAlgorithmState}
         checkingIndices={pivotIndex !== undefined && checkingIndex !== undefined ? [pivotIndex, checkingIndex] : undefined}
-        isNodeActive={(index: number) => index === pivotIndex}
-        isNodeChecking={(index: number) => index === checkingIndex}
+        classNameFn={nodeClassName}
     />;
 }
 

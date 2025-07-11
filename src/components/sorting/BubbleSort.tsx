@@ -35,14 +35,18 @@ function BubbleSort() {
         }
     }
 
+    function nodeClassName(index: number) {
+        return checkingIndices?.includes(index) ? "border-green-400" : undefined;
+    }
+
     return <SortingAlgorithm
+        name="Bubble Sort"
         algorithm={bubbleSort}
         makeSnapshot={makeSnapshot}
         updateData={updateData}
         setAlgorithmState={setAlgorithmState}
         checkingIndices={checkingIndices}
-        isNodeActive={(index: number) => checkingIndices?.includes(index) ?? false}
-        isNodeChecking={() => false}
+        classNameFn={nodeClassName}
     />;
 }
 

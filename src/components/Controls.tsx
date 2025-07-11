@@ -1,4 +1,5 @@
 import {ChevronLeft, ChevronRight, Pause, Play} from "lucide-react";
+import {useEffect} from "react";
 
 type Props = {
   stepBack: () => void;
@@ -10,6 +11,24 @@ type Props = {
 };
 
 const Controls = ({stepBack, stepForward, toggleAlgorithm, firstState, isPaused, isDone}: Props) => {
+    useEffect(() => {
+        const listener = (e: KeyboardEvent) => {
+            if (e.key === "ArrowLeft") {
+                stepBack();
+            } else if (e.key === "ArrowRight") {
+                stepForward();
+            } else if (e.key === " ") {
+                toggleAlgorithm();
+            }
+        };
+
+        document.addEventListener("keyup", listener);
+
+        return () => {
+            document.removeEventListener("keyup", listener);
+        }
+    }, []);
+
     return <div className="flex justify-center items-center w-full gap-1">
         <button onClick={stepBack}
                 disabled={firstState}

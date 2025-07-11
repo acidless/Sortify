@@ -1,4 +1,4 @@
-import {type RefObject, useCallback, useRef, useState} from "react";
+import {JSX, type RefObject, useCallback, useRef, useState} from "react";
 import type {SampleArray} from "../../types.ts";
 import useAlgorithm from "../../hooks/useAlgorithm.ts";
 import ArrayInput from "./ArrayInput.tsx";
@@ -7,23 +7,25 @@ import ArrayNode from "./ArrayNode.tsx";
 import Controls from "../Controls.tsx";
 
 type Props = {
+    name: string;
     algorithm: any;
     makeSnapshot: () => any;
     updateData: (next: any) => void;
     setAlgorithmState: (value: any) => void;
     checkingIndices?: number[];
-    isNodeActive: (index: number) => boolean;
-    isNodeChecking: (index: number) => boolean;
+    classNameFn: (index: number, key: number) => string | undefined;
+    children?: (array: SampleArray) => JSX.Element;
 }
 
 const SortingAlgorithm = ({
+                              name,
                               algorithm,
                               makeSnapshot,
                               updateData,
                               setAlgorithmState,
                               checkingIndices,
-                              isNodeActive,
-                              isNodeChecking
+                              classNameFn,
+                              children
                           }: Props) => {
     const [array, setArray] = useState<SampleArray>([]);
     const arrayRef = useRef<SampleArray>(array);
@@ -38,12 +40,17 @@ const SortingAlgorithm = ({
     }, []);
 
     const updateAll = useCallback((next: any) => {
-        updateArray(next.array);
+        if(next.array) {
+            updateArray(next.array);
+        }
         updateData(next)
     }, []);
 
     const onStep = useCallback((value: any, historyRef: RefObject<Array<any>>) => {
-        updateArray(value.array);
+        if(value.array) {
+            updateArray(value.array);
+        }
+
         setAlgorithmStateWrapper(value);
 
         historyRef.current.push({
@@ -87,16 +94,15 @@ const SortingAlgorithm = ({
 
     return (
         <div className="h-full flex flex-col items-start">
-            <h1 className="font-bold text-3xl text-center mb-10 self-center">Bubble sort</h1>
+            <h1 className="font-bold text-3xl text-center mb-10 self-center">{name}</h1>
             <ArrayInput onSubmit={startAlgorithm} onInputChange={handleInputChange}></ArrayInput>
             <div className="flex-1 self-stretch flex flex-col justify-center items-center">
                 <div className="relative max-w-full">
                     <ComparisionText array={array}
                                      indecies={checkingIndices}></ComparisionText>
-                    <div className="flex gap-1 justify-center max-w-full overflow-x-auto overflow-y-hidden mb-10">
+                    <div className="flex gap-1 justify-center max-w-full mb-10">
                         {array.map((item, index) => (
-                            <ArrayNode key={item.key} value={item.value}
-                                       active={isNodeActive(index)} checking={isNodeChecking(index)}></ArrayNode>
+                            <ArrayNode key={item.key} value={item.value} className={classNameFn(index, item.key)}></ArrayNode>
                         ))}
                     </div>
                     <div
@@ -104,6 +110,7 @@ const SortingAlgorithm = ({
                         <p className="text-xl text-green-400">Работа алгоритма завершена</p>
                     </div>
                 </div>
+                {children && children(array)}
             </div>
             <Controls stepBack={stepBack} stepForward={stepForward} toggleAlgorithm={toggleAlgorithm}
                       firstState={firstState} isPaused={isPaused} isDone={isDone}></Controls>
