@@ -1,10 +1,11 @@
-import {JSX, type RefObject, useCallback, useRef, useState} from "react";
+import {type RefObject, useCallback, useRef, useState} from "react";
 import type {SampleArray} from "../../types.ts";
 import useAlgorithm from "../../hooks/useAlgorithm.ts";
 import ArrayInput from "./ArrayInput.tsx";
-import ComparisionText from "./ComparisionText.tsx";
+import ComparisionIndices from "../ComparisionIndices.tsx";
 import ArrayNode from "./ArrayNode.tsx";
 import Controls from "../Controls.tsx";
+import EndAlgorithm from "../EndAlgorithm.tsx";
 
 type Props = {
     name: string;
@@ -98,17 +99,14 @@ const SortingAlgorithm = ({
             <ArrayInput onSubmit={startAlgorithm} onInputChange={handleInputChange}></ArrayInput>
             <div className="flex-1 self-stretch flex flex-col justify-center items-center">
                 <div className="relative max-w-full">
-                    <ComparisionText array={array}
-                                     indecies={checkingIndices}></ComparisionText>
+                    <ComparisionIndices array={array}
+                                        indecies={checkingIndices}></ComparisionIndices>
                     <div className="flex gap-1 justify-center max-w-full mb-10">
                         {array.map((item, index) => (
                             <ArrayNode key={item.key} value={item.value} className={classNameFn(index, item.key)}></ArrayNode>
                         ))}
                     </div>
-                    <div
-                        className={`absolute -bottom-8 left-1/2 -translate-x-1/2 w-max text-center transition-all duration-500 ${isDone ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}>
-                        <p className="text-xl text-green-400">Работа алгоритма завершена</p>
-                    </div>
+                    <EndAlgorithm isDone={isDone}/>
                 </div>
                 {children && children(array)}
             </div>
