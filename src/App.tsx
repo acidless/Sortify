@@ -4,6 +4,7 @@ import {BrowserRouter, Routes, Route} from "react-router";
 import BubbleSort from "./components/sorting/BubbleSort.tsx";
 import InsertionSort from "./components/sorting/InsertionSort.tsx";
 import MergeSort from "./components/sorting/MergeSort.tsx";
+import BSTSearch from "./components/bst/BSTSearch.tsx";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
                     <Route path="/bubble-sort" element={<BubbleSort />} />
                     <Route path="/insertion-sort" element={<InsertionSort />} />
                     <Route path="/merge-sort" element={<MergeSort />} />
+                    <Route path="/bst-search" element={<BSTSearch />} />
                 </Routes>
             </main>
         </BrowserRouter>

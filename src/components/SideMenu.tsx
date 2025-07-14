@@ -95,7 +95,7 @@ function SideMenu() {
                                 (isActive ? "text-green-400" : "") + " flex flex-col items-center"
                             }>
                                 <Search className="w-16 h-16"></Search>
-                                Поиск
+                                Search
                             </NavLink>
                         </li>
                         <li>
@@ -103,7 +103,7 @@ function SideMenu() {
                                 (isActive ? "text-green-400" : "") + " flex flex-col items-center"
                             }>
                                 <Plus className="w-16 h-16"></Plus>
-                                Вставка
+                                Insert
                             </NavLink>
                         </li>
                         <li>
@@ -111,7 +111,7 @@ function SideMenu() {
                                 (isActive ? "text-green-400" : "") + " flex flex-col items-center"
                             }>
                                 <X className="w-16 h-16"></X>
-                                Удаление
+                                Remove
                             </NavLink>
                         </li>
                     </ul>
