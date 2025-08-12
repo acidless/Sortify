@@ -29,7 +29,7 @@ const Controls = ({stepBack, stepForward, toggleAlgorithm, firstState, isPaused,
         }
     }, []);
 
-    return <div className="flex justify-center items-center w-full gap-1">
+    return <div className="flex justify-center items-center w-full gap-1 sticky bottom-4">
         <button onClick={stepBack}
                 disabled={firstState}
                 className="bg-neutral-700 hover:bg-neutral-800 disabled:bg-neutral-800 disabled:cursor-not-allowed transition-colors duration-300 font-bold py-2 px-4 rounded cursor-pointer">

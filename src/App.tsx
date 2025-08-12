@@ -5,19 +5,21 @@ import BubbleSort from "./components/sorting/BubbleSort.tsx";
 import InsertionSort from "./components/sorting/InsertionSort.tsx";
 import MergeSort from "./components/sorting/MergeSort.tsx";
 import BSTSearch from "./components/bst/BSTSearch.tsx";
+import BSTInsert from "./components/bst/BSTInsert.tsx";
 
 function App() {
   return (
-    <div className="h-full flex">
+    <div className="flex h-max">
         <BrowserRouter>
             <SideMenu></SideMenu>
-            <main className="p-10 w-full">
+            <main className="p-4 md:p-10 w-full h-max">
                 <Routes>
                     <Route path="/" element={<p>Home</p>} />
                     <Route path="/bubble-sort" element={<BubbleSort />} />
                     <Route path="/insertion-sort" element={<InsertionSort />} />
                     <Route path="/merge-sort" element={<MergeSort />} />
                     <Route path="/bst-search" element={<BSTSearch />} />
+                    <Route path="/bst-insert" element={<BSTInsert />} />
                 </Routes>
             </main>
         </BrowserRouter>

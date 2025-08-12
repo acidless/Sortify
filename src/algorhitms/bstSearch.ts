@@ -11,19 +11,20 @@ export function* bstSearch(root: BSTNode | null, value: number): Generator<BSTSe
     let current = root;
 
     while (current !== null) {
-        yield { type: "compare", node: current };
+        yield {type: "compare", node: current};
 
         if (value === current.value) {
-            yield { type: "found", node: current };
+            yield {type: "found", node: current};
             return;
         } else if (value < current.value) {
-            yield { type: "go-left", node: current };
+            yield {type: "go-left", node: current};
             current = current.left;
         } else {
-            yield { type: "go-right", node: current };
+            yield {type: "go-right", node: current};
             current = current.right;
         }
     }
 
-    yield { type: "not-found", node: null };
+    yield {type: "not-found", node: null};
 }
+
