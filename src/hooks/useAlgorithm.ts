@@ -1,30 +1,57 @@
-import {type RefObject, useRef, useState} from "react";
+import {type RefObject, useEffect, useReducer, useRef} from "react";
 import useAlgorithmInterval from "./useAlgorithmInterval.ts";
+
+type State = {
+    isDone: boolean;
+    isPaused: boolean;
+    firstState: boolean;
+}
+
+type Action =
+    | { type: "SET_DONE"; payload: boolean }
+    | { type: "SET_PAUSED"; payload: boolean }
+    | { type: "SET_FIRST_STATE"; payload: boolean };
+
+const initialState: State = {
+    isDone: false,
+    isPaused: false,
+    firstState: true
+};
+
+function reducer(state: State, action: Action): State {
+    switch (action.type) {
+        case "SET_DONE":
+            return {...state, isDone: action.payload};
+        case "SET_PAUSED":
+            return {...state, isPaused: action.payload};
+        case "SET_FIRST_STATE":
+            return {...state, firstState: action.payload};
+        default:
+            return state;
+    }
+}
 
 
 function useAlgorithm<I, A>(algorithm: (input: I) => Generator<A, void, unknown>, updateAllData: (data: any) => void, onStart: (data: I, historyRef: RefObject<Array<any>>) => void, onStep: (data: A, historyRef: RefObject<Array<any>>) => void) {
     const [intervalRef, cleanupInterval] = useAlgorithmInterval();
-
-    const [isDone, setIsDone] = useState(false);
-    const [isPaused, setIsPaused] = useState(false);
-    const [firstState, setFirstState] = useState(true);
-
     const generatorRef = useRef<Generator<A, void, unknown> | undefined>(undefined);
     const historyRef = useRef<Array<any>>([]);
-    const doneRef = useRef(isDone);
     const currentStep = useRef(0);
 
-    function updateDone(newDone: boolean) {
-        setIsDone(newDone);
-        doneRef.current = newDone;
-    }
+    const [state, dispatch] = useReducer(reducer, initialState);
+    const stateRef = useRef<State>(state);
+
+    useEffect(() => {
+        stateRef.current = state;
+    }, [state]);
+
 
     function startAlgorithm(input: I) {
         if (!input) return;
 
         cleanupInterval();
-        updateDone(false);
-        setIsPaused(false);
+        dispatch({type: "SET_DONE", payload: false});
+        dispatch({type: "SET_PAUSED", payload: false});
 
         generatorRef.current = algorithm(input);
         currentStep.current = 0;
@@ -40,8 +67,10 @@ function useAlgorithm<I, A>(algorithm: (input: I) => Generator<A, void, unknown>
             const next = historyRef.current[++currentStep.current];
 
             updateAllData(next);
-            updateDone(next.isDone);
-            setFirstState(false);
+
+            dispatch({type: "SET_DONE", payload: next.isDone});
+            dispatch({type: "SET_FIRST_STATE", payload: false});
+
             return;
         }
 
@@ -52,28 +81,29 @@ function useAlgorithm<I, A>(algorithm: (input: I) => Generator<A, void, unknown>
         if (!done && value) {
             onStep(value, historyRef);
             currentStep.current++;
-            setFirstState(false);
+
+            dispatch({type: "SET_FIRST_STATE", payload: false});
         }
     }
 
     function stepBack() {
         if (currentStep.current < 0) return;
 
-        updateDone(false);
-        setIsPaused(true);
+        dispatch({type: "SET_DONE", payload: false});
+        dispatch({type: "SET_PAUSED", payload: true});
         cleanupInterval();
 
         const prev = historyRef.current[currentStep.current];
         currentStep.current = Math.max(0, currentStep.current - 1);
         if (currentStep.current === 0) {
-            setFirstState(true);
+            dispatch({type: "SET_FIRST_STATE", payload: true});
         }
 
         updateAllData(prev);
     }
 
     function toggleAlgorithm() {
-        if (isPaused) {
+        if (state.isPaused) {
             intervalRef.current = setInterval(() => {
                 runStep();
             }, 1000);
@@ -81,16 +111,26 @@ function useAlgorithm<I, A>(algorithm: (input: I) => Generator<A, void, unknown>
             cleanupInterval();
         }
 
-        setIsPaused(prev => !prev);
+
+        dispatch({type: "SET_PAUSED", payload: !state.isPaused});
     }
 
     function stepForward() {
         runStep();
-        setIsPaused(true);
+        dispatch({type: "SET_PAUSED", payload: true});
         cleanupInterval();
     }
 
-    return {startAlgorithm, stepBack, toggleAlgorithm, isDone, isPaused, stepForward, firstState, cleanupInterval, updateDone, doneRef};
+    return {
+        startAlgorithm,
+        stepBack,
+        toggleAlgorithm,
+        algorithmState: state,
+        algorithmDispatch: dispatch,
+        algorithmStateRef: stateRef,
+        stepForward,
+        cleanupInterval
+    };
 }
 
 export default useAlgorithm;
