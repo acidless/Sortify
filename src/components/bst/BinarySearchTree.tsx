@@ -1,13 +1,15 @@
 import type {BSTNode as NodeType, PositionedNode} from "../../types.ts";
 import {useEffect, useLayoutEffect, useRef, useState} from "react";
 import BSTNode from "./BSTNode.tsx";
+import {Infinity} from "lucide-react";
 
 type Props = {
     root: NodeType | null;
     nodeStateFunc: (id: string) => string;
+    size: number;
 };
 
-const BinarySearchTree = ({ root, nodeStateFunc }: Props) =>  {
+const BinarySearchTree = ({ root, nodeStateFunc, size }: Props) =>  {
     const [nodes, setNodes] = useState<PositionedNode[]>([]);
     const [lines, setLines] = useState<Array<{ from: string; to: string }>>([]);
     const [absoluteLines, setAbsoluteLines] = useState<
@@ -21,29 +23,38 @@ const BinarySearchTree = ({ root, nodeStateFunc }: Props) =>  {
         window.addEventListener("resize", updateBST);
         updateBST();
         return () => window.removeEventListener("resize", updateBST);
-    }, [root]);
+    }, [root, size]);
+
 
     function updateBST() {
         const positions: PositionedNode[] = [];
         const edges: Array<{ from: string; to: string }> = [];
+        let mostDeepPosY = 0;
 
         function traverse(node: NodeType | null, x: number, y: number, depth: number) {
             if (!node) return;
+
+            if(y > mostDeepPosY) {
+                mostDeepPosY = y;
+            }
 
             positions.push({ ...node, x, y });
 
             if (node.left) {
                 edges.push({ from: node.id, to: node.left.id });
-                traverse(node.left, x - 150 / (depth + 1), y + 120, depth + 1);
+                traverse(node.left, x - 350 / (depth + 1), y + 120, depth + 1);
             }
 
             if (node.right) {
                 edges.push({ from: node.id, to: node.right.id });
-                traverse(node.right, x + 150 / (depth + 1), y + 120, depth + 1);
+                traverse(node.right, x + 350 / (depth + 1), y + 120, depth + 1);
             }
         }
 
+
         traverse(root, svgWrapperRef.current!.clientWidth / 2, 75, 1);
+        svgWrapperRef.current!.style.height = `${mostDeepPosY + 150}px`;
+
         setNodes(positions);
         setLines(edges);
     }

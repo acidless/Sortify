@@ -1,35 +1,31 @@
 import BinarySearchTree from "./BinarySearchTree.tsx";
-import {type RefObject, useCallback, useEffect, useRef, useState} from "react";
+import {type RefObject, useCallback, useRef, useState} from "react";
 import useAlgorithm from "../../hooks/useAlgorithm.ts";
 import type {BSTNode} from "../../types.ts";
-import {bstSearch} from "../../algorhitms/bstSearch.ts";
 import Controls from "../Controls.tsx";
 import EndAlgorithm from "../EndAlgorithm.tsx";
 import PopupText from "../PopupText.tsx";
 import BSTSearchInput from "./BSTInput.tsx";
-import {bstBfs, generateRandomBST} from "../../algorhitms/bstUtils.ts";
+import {bstInsert} from "../../algorhitms/bstInsert.ts";
 
+const node = {value: 10, id: crypto.randomUUID(), left: null, right: null};
 
 function BSTSearch() {
     const [checkingNode, setCheckingNode] = useState<null | BSTNode>(null);
-    const [foundNode, setFoundNode] = useState<null | BSTNode>(null);
+    const [insertedNode, setInsertedNode] = useState<null | BSTNode>(null);
     const [popupText, setPopupText] = useState<string>("");
-    const [findingNumber, setFindingNumber] = useState<number>(0);
-    const [bstNodes, setBstNodes] = useState<BSTNode[]>([]);
+    const [insertingNumber, setInsertingNumber] = useState<number>(0);
+    const [bstNodes, setBstNodes] = useState<BSTNode[]>([node]);
 
     const checkingNodeRef = useRef<null | BSTNode>(null);
-    const foundNodeRef = useRef<null | BSTNode>(null);
+    const insertedNodeRef = useRef<null | BSTNode>(null);
     const popupTextRef = useRef<string>("");
-    const findingNumberRef = useRef<number>(0);
-
-    useEffect(() => {
-        const randomTree = bstBfs(generateRandomBST(8, 0, 20));
-        setBstNodes(randomTree);
-    }, []);
+    const insertingNumberRef = useRef<number>(0);
+    const bstNodesRef = useRef<BSTNode[]>([node]);
 
     const algorithm = useCallback((input: BSTNode) => {
-        return bstSearch(input, findingNumber);
-    }, [findingNumber]);
+        return bstInsert(input, insertingNumber);
+    }, [insertingNumber]);
 
     function makeComparison(a: number, b: number) {
         if (a > b) return `${a} > ${b}, идем влево`;
@@ -37,9 +33,14 @@ function BSTSearch() {
         return `${a} = ${b}`;
     }
 
-    function updateFindingNumber(number: number) {
-        setFindingNumber(number);
-        findingNumberRef.current = number;
+    function updateBstNodes(nodes: BSTNode[]) {
+        setBstNodes(nodes);
+        bstNodesRef.current = nodes;
+    }
+
+    function updateInsertingNumber(number: number) {
+        setInsertingNumber(number);
+        insertingNumberRef.current = number;
     }
 
     function updatePopupText(newPopupText: string) {
@@ -52,24 +53,26 @@ function BSTSearch() {
         checkingNodeRef.current = newCheckingNode;
     }
 
-    function updateFoundNode(newFoundNode: null | BSTNode) {
-        setFoundNode(newFoundNode);
-        foundNodeRef.current = newFoundNode;
+    function updateInsertedNode(newInsertedNode: null | BSTNode) {
+        setInsertedNode(newInsertedNode);
+        insertedNodeRef.current = newInsertedNode;
     }
 
     const onStart = useCallback((input: BSTNode, historyRef: RefObject<Array<any>>) => {
         historyRef.current = [{
             checkingNode: null,
-            foundNode: null,
+            insertedNode: null,
             isDone: false,
-            popupText: ""
+            popupText: "",
+            nodes: bstNodesRef.current.map((node) => ({...node}))
         }];
     }, []);
 
     const updateAll = useCallback((next: any) => {
         updateCheckingNode(next.checkingNode);
-        updateFoundNode(next.foundNode);
+        updateInsertedNode(next.insertedNode);
         updatePopupText(next.popupText);
+        updateBstNodes(next.nodes)
     }, []);
 
     const onStep = useCallback((value: any, historyRef: RefObject<Array<any>>) => {
@@ -77,11 +80,12 @@ function BSTSearch() {
 
         historyRef.current.push({
             checkingNode: checkingNodeRef.current,
-            foundNode: foundNodeRef.current,
+            insertedNode: insertedNodeRef.current,
             isDone: doneRef.current,
-            popupText: popupTextRef.current
+            popupText: popupTextRef.current,
+            nodes: bstNodesRef.current.map((node) => ({...node}))
         });
-    }, [findingNumber]);
+    }, [insertingNumber]);
 
     function setAlgorithmStateWrapper(value: any) {
         if (value.type === "not-found" || value.type === "found") {
@@ -91,25 +95,26 @@ function BSTSearch() {
 
         switch (value.type) {
             case "compare":
-                updatePopupText(makeComparison(value.node.value, findingNumberRef.current));
+                updatePopupText(makeComparison(value.node.value, insertingNumberRef.current));
                 updateCheckingNode(value.node);
-                updateFoundNode(null);
+                updateInsertedNode(null);
                 break;
-            case "found":
-                updatePopupText(`Элемент найден!`);
-                updateFoundNode(value.node);
+            case "exists":
+                updatePopupText(`Элемент уже существует!`);
+                updateInsertedNode(null);
                 updateCheckingNode(null);
                 break;
-            case "not-found":
-                updatePopupText(`Элемент не найден!`);
-                updateFoundNode(null);
+            case "inserted":
+                updatePopupText(`Элемент вставлен!`);
+                updateInsertedNode(value.node);
                 updateCheckingNode(null);
+                setBstNodes([...bstNodes, value.node]);
                 break;
         }
     }
 
     function nodeStateFunc(id: string) {
-        if (foundNode?.id === id) return "border-green-400";
+        if (insertedNode?.id === id) return "border-green-400";
         if (checkingNode?.id === id) return "border-yellow-400";
 
         return "border-neutral-700";
@@ -129,7 +134,7 @@ function BSTSearch() {
     } = useAlgorithm(algorithm, updateAll, onStart, onStep);
 
     function onOperationChange(value: number) {
-        updateFindingNumber(value);
+        updateInsertingNumber(value);
     }
 
     function onOperation() {
@@ -137,8 +142,8 @@ function BSTSearch() {
     }
 
     return <div className="h-full flex flex-col items-start h-max">
-        <h1 className="font-bold text-3xl text-center mb-10 self-center">BST Search</h1>
-        <BSTSearchInput onOperation={onOperation} operationLabel="Введите значение для поиска"
+        <h1 className="font-bold text-3xl text-center mb-10 self-center">BST Insert</h1>
+        <BSTSearchInput onOperation={onOperation} operationLabel="Введите значение для вставки"
                         onOperationChange={onOperationChange}/>
         <div className="flex-1 self-stretch flex flex-col justify-center items-center relative mt-24">
             <PopupText id={popupText} text={popupText}/>
