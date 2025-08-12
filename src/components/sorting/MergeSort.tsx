@@ -1,82 +1,92 @@
-import {useRef, useState} from "react";
+import {useEffect, useReducer, useRef} from "react";
 import SortingAlgorithm from "./SortingAlgorithm.tsx";
-import {mergeSort, type MergeSortAction} from "../../algorhitms/mergeSort.ts";
+import {mergeSort, type MergeSortAction} from "../../algorithms/mergeSort.ts";
 import type {SampleArray} from "../../types.ts";
 
-function MergeSort() {
-    const [leftPart, setLeftPart] = useState<SampleArray | undefined>();
-    const [rightPart, setRightPart] = useState<SampleArray | undefined>();
-    const leftPartRef = useRef<SampleArray | undefined>(leftPart);
-    const rightPartRef = useRef<SampleArray | undefined>(rightPart);
+type State = {
+    leftPart: SampleArray | undefined;
+    rightPart: SampleArray | undefined;
+    checkingIndices: number[] | undefined;
+    overwriteIndex: number | undefined;
+};
 
-    const [checkingIndices, setCheckingIndices] = useState<number[] | undefined>();
-    const [overwriteIndex, setOverwriteIndex] = useState<number | undefined>();
-    const checkingIndicesRef = useRef<number[] | undefined>(checkingIndices);
-    const overwriteIndexRef = useRef<number | undefined>(overwriteIndex);
+const initialState: State = {
+    leftPart: undefined,
+    rightPart: undefined,
+    checkingIndices: undefined,
+    overwriteIndex: undefined
+};
+
+type Action =
+    { type: "SET_LEFT_PART", payload: SampleArray | undefined } |
+    { type: "SET_RIGHT_PART", payload: SampleArray | undefined } |
+    { type: "SET_CHECKING_INDICES", payload: number[] | undefined } |
+    { type: "SET_OVERWRITE_INDEX", payload: number | undefined };
+
+function reducer(state: State, action: Action): State {
+    switch (action.type) {
+        case "SET_LEFT_PART":
+            return {...state, leftPart: action.payload};
+        case "SET_RIGHT_PART":
+            return {...state, rightPart: action.payload};
+        case "SET_CHECKING_INDICES":
+            return {...state, checkingIndices: action.payload};
+        case "SET_OVERWRITE_INDEX":
+            return {...state, overwriteIndex: action.payload};
+    }
+}
+
+function MergeSort() {
+    const [state, dispatch] = useReducer(reducer, initialState);
+    const stateRef = useRef<State>(state);
+
+    useEffect(() => {
+        stateRef.current = state;
+    }, [state]);
 
     function makeSnapshot() {
         return {
-            checkingIndices: checkingIndicesRef.current,
-            leftPart: leftPartRef.current,
-            rightPart: rightPartRef.current
+            checkingIndices: stateRef.current.checkingIndices,
+            leftPart: stateRef.current.leftPart,
+            rightPart: stateRef.current.rightPart
         };
     }
 
-    function updateLeftPart(leftPart: SampleArray | undefined) {
-        setLeftPart(leftPart);
-        leftPartRef.current = leftPart;
-    }
-
-    function updateRightPart(rightPart: SampleArray | undefined) {
-        setRightPart(rightPart);
-        rightPartRef.current = rightPart;
-    }
-
-    function updateCheckingIndices(newCheckingIndices: number[] | undefined) {
-        setCheckingIndices(newCheckingIndices);
-        checkingIndicesRef.current = newCheckingIndices;
-    }
-
-    function updateOverwriteIndices(newOverwriteIndex: number | undefined) {
-        setOverwriteIndex(newOverwriteIndex);
-        overwriteIndexRef.current = newOverwriteIndex;
-    }
-
     function updateData(next: any) {
-        updateCheckingIndices(next.indices);
-        updateOverwriteIndices(next.index)
-        updateLeftPart(next.leftPart);
-        updateRightPart(next.rightPart);
+        dispatch({type: "SET_LEFT_PART", payload: next.leftPart});
+        dispatch({type: "SET_RIGHT_PART", payload: next.rightPart});
+        dispatch({type: "SET_CHECKING_INDICES", payload: next.indices});
+        dispatch({type: "SET_OVERWRITE_INDEX", payload: next.index});
     }
 
     function setAlgorithmState(action: MergeSortAction) {
         switch (action.type) {
             case "slice":
-                updateLeftPart(action.left);
-                updateRightPart(action.right);
-                updateCheckingIndices(undefined);
-                updateOverwriteIndices(undefined);
+                dispatch({type: "SET_LEFT_PART", payload: action.left});
+                dispatch({type: "SET_RIGHT_PART", payload: action.right});
+                dispatch({type: "SET_CHECKING_INDICES", payload: undefined});
+                dispatch({type: "SET_OVERWRITE_INDEX", payload: undefined});
                 break;
             case "compare":
-                updateCheckingIndices(action.indices);
-                updateOverwriteIndices(undefined);
+                dispatch({type: "SET_CHECKING_INDICES", payload: action.indices});
+                dispatch({type: "SET_OVERWRITE_INDEX", payload: undefined});
                 break;
             case "overwrite":
-                updateCheckingIndices(undefined);
-                updateOverwriteIndices(action.index);
+                dispatch({type: "SET_CHECKING_INDICES", payload: undefined});
+                dispatch({type: "SET_OVERWRITE_INDEX", payload: action.index});
                 break;
             case "done":
-                updateCheckingIndices(undefined);
-                updateOverwriteIndices(undefined);
+                dispatch({type: "SET_CHECKING_INDICES", payload: undefined});
+                dispatch({type: "SET_OVERWRITE_INDEX", payload: undefined});
                 break;
         }
     }
 
     function nodeClassName(index: number, key: number) {
-        if (index === overwriteIndex) return "border-green-400";
-        if (checkingIndices?.includes(index)) return "border-yellow-400";
-        if (leftPart?.filter(item => item.key === key).length) return "border-blue-400";
-        if (rightPart?.filter(item => item.key === key).length) return "border-orange-400";
+        if (index === state.overwriteIndex) return "border-green-400";
+        if (state.checkingIndices?.includes(index)) return "border-yellow-400";
+        if (state.leftPart?.filter(item => item.key === key).length) return "border-blue-400";
+        if (state.rightPart?.filter(item => item.key === key).length) return "border-orange-400";
     }
 
     return <SortingAlgorithm
@@ -85,7 +95,7 @@ function MergeSort() {
         makeSnapshot={makeSnapshot}
         updateData={updateData}
         setAlgorithmState={setAlgorithmState}
-        checkingIndices={checkingIndices}
+        checkingIndices={state.checkingIndices}
         classNameFn={nodeClassName}
     ></SortingAlgorithm>;
 }

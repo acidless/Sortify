@@ -56,22 +56,20 @@ const SortingAlgorithm = ({
 
         historyRef.current.push({
             array: structuredClone(arrayRef.current),
-            isDone: doneRef.current,
+            isDone: algorithmStateRef.current.isDone,
             ...makeSnapshot()
         });
     }, [makeSnapshot]);
 
     const {
         cleanupInterval,
-        doneRef,
         stepBack,
         stepForward,
         toggleAlgorithm,
-        isPaused,
-        isDone,
-        firstState,
         startAlgorithm,
-        updateDone
+        algorithmDispatch,
+        algorithmState,
+        algorithmStateRef
     } = useAlgorithm(algorithm, updateAll, onStart, onStep);
 
     function updateArray(newArray: SampleArray) {
@@ -80,21 +78,21 @@ const SortingAlgorithm = ({
     }
 
     function handleInputChange() {
-        updateDone(false);
+        algorithmDispatch({type: "SET_DONE", payload: false});
         cleanupInterval();
     }
 
     function setAlgorithmStateWrapper(value: any) {
         if(value.type === "done") {
             cleanupInterval();
-            updateDone(true);
+            algorithmDispatch({type: "SET_DONE", payload: true});
         }
 
         setAlgorithmState(value);
     }
 
     return (
-        <div className="h-full flex flex-col items-start">
+        <div className="h-full flex flex-col items-start flex-1">
             <h1 className="font-bold text-3xl text-center mb-10 self-center">{name}</h1>
             <ArrayInput onSubmit={startAlgorithm} onInputChange={handleInputChange}></ArrayInput>
             <div className="flex-1 self-stretch flex flex-col justify-center items-center">
@@ -106,12 +104,12 @@ const SortingAlgorithm = ({
                             <ArrayNode key={item.key} value={item.value} className={classNameFn(index, item.key)}></ArrayNode>
                         ))}
                     </div>
-                    <EndAlgorithm isDone={isDone}/>
+                    <EndAlgorithm isDone={algorithmState.isDone}/>
                 </div>
                 {children && children(array)}
             </div>
             <Controls stepBack={stepBack} stepForward={stepForward} toggleAlgorithm={toggleAlgorithm}
-                      firstState={firstState} isPaused={isPaused} isDone={isDone}></Controls>
+                      firstState={algorithmState.firstState} isPaused={algorithmState.isPaused} isDone={algorithmState.isDone}></Controls>
         </div>
     );
 }

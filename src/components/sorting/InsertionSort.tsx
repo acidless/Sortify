@@ -1,58 +1,73 @@
-import {useRef, useState} from "react";
-import {insertionSort, type InsertionSortAction} from "../../algorhitms/insertionSort.ts";
+import {useEffect, useReducer, useRef} from "react";
+import {insertionSort, type InsertionSortAction} from "../../algorithms/insertionSort.ts";
 import SortingAlgorithm from "./SortingAlgorithm.tsx";
 
+type State = {
+    pivotIndex: number | undefined,
+    checkingIndex: number | undefined
+};
+
+const initialState: State = {
+    pivotIndex: undefined,
+    checkingIndex: undefined
+};
+
+type Action =
+    { type: "SET_PIVOT_INDEX", payload: number | undefined } |
+    { type: "SET_CHECKING_INDEX", payload: number | undefined };
+
+function reducer(state: State, action: Action): State {
+    switch (action.type) {
+        case "SET_PIVOT_INDEX":
+            return {...state, pivotIndex: action.payload};
+        case "SET_CHECKING_INDEX":
+            return {...state, checkingIndex: action.payload};
+        default:
+            return state;
+    }
+}
+
 function InsertionSort() {
-    const [pivotIndex, setPivotIndex] = useState<number | undefined>();
-    const [checkingIndex, setCheckingIndex] = useState<number | undefined>();
-    const pivotIndexRef = useRef<number | undefined>(pivotIndex);
-    const checkingIndexRef = useRef<number | undefined>(checkingIndex);
+    const [state, dispatch] = useReducer(reducer, initialState);
+    const stateRef = useRef<State>(state);
+
+    useEffect(() => {
+        stateRef.current = state;
+    }, [state])
+
 
     function makeSnapshot() {
         return {
-            pivotIndex: pivotIndexRef.current,
-            checkingIndex: checkingIndexRef.current
+            pivotIndex: stateRef.current.pivotIndex,
+            checkingIndex: stateRef.current.checkingIndex
         };
     }
 
-    function updatePivotIndex(newPivotIndex: number | undefined) {
-        setPivotIndex(newPivotIndex);
-        pivotIndexRef.current = newPivotIndex;
-    }
-
-    function updateCheckingIndex(newCheckingIndex: number | undefined) {
-        setCheckingIndex(newCheckingIndex);
-        checkingIndexRef.current = newCheckingIndex;
-    }
-
     function updateData(next: any) {
-        updatePivotIndex(next.pivotIndex);
-        updateCheckingIndex(next.checkingIndex);
+        dispatch({type: "SET_PIVOT_INDEX", payload: next.pivotIndex});
+        dispatch({type: "SET_CHECKING_INDEX", payload: next.checkingIndex});
     }
 
     function setAlgorithmState(action: InsertionSortAction) {
         switch (action.type) {
             case "key":
-                updatePivotIndex(action.index);
-                updateCheckingIndex(undefined);
+                dispatch({type: "SET_PIVOT_INDEX", payload: action.index});
+                dispatch({type: "SET_CHECKING_INDEX", payload: undefined});
                 break;
             case "checking":
-                updateCheckingIndex(action.checkingIndex);
+                dispatch({type: "SET_CHECKING_INDEX", payload: action.checkingIndex});
                 break;
             case "insert":
-                updateCheckingIndex(undefined);
-                updatePivotIndex(undefined);
-                break;
             case "done":
-                updateCheckingIndex(undefined);
-                updatePivotIndex(undefined);
+                dispatch({type: "SET_CHECKING_INDEX", payload: undefined});
+                dispatch({type: "SET_PIVOT_INDEX", payload: undefined});
                 break;
         }
     }
 
     function nodeClassName(index: number) {
-        if(pivotIndex === index) return "border-green-400";
-        if(checkingIndex === index) return "border-yellow-400";
+        if (state.pivotIndex === index) return "border-green-400";
+        if (state.checkingIndex === index) return "border-yellow-400";
     }
 
     return <SortingAlgorithm
@@ -61,7 +76,7 @@ function InsertionSort() {
         makeSnapshot={makeSnapshot}
         updateData={updateData}
         setAlgorithmState={setAlgorithmState}
-        checkingIndices={pivotIndex !== undefined && checkingIndex !== undefined ? [pivotIndex, checkingIndex] : undefined}
+        checkingIndices={state.pivotIndex !== undefined && state.checkingIndex !== undefined ? [state.pivotIndex, state.checkingIndex] : undefined}
         classNameFn={nodeClassName}
     />;
 }

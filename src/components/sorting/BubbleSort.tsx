@@ -1,5 +1,5 @@
 import {useRef, useState} from "react";
-import {bubbleSort, type BubbleSortAction} from "../../algorhitms/bubbleSort.ts";
+import {bubbleSort, type BubbleSortAction} from "../../algorithms/bubbleSort.ts";
 import SortingAlgorithm from "./SortingAlgorithm.tsx";
 
 function BubbleSort() {

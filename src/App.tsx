@@ -9,10 +9,10 @@ import BSTInsert from "./components/bst/BSTInsert.tsx";
 
 function App() {
   return (
-    <div className="flex h-max">
+    <div className="flex h-max min-h-full">
         <BrowserRouter>
             <SideMenu></SideMenu>
-            <main className="p-4 md:p-10 w-full h-max">
+            <main className="p-4 md:p-10 w-full h-max min-h-full flex flex-col">
                 <Routes>
                     <Route path="/" element={<p>Home</p>} />
                     <Route path="/bubble-sort" element={<BubbleSort />} />
