@@ -1,13 +1,16 @@
-import {Play} from "lucide-react";
+import {Dices, Play} from "lucide-react";
 import {useState} from "react";
+import type {BSTNode} from "../../types.ts";
+import {bstBfs, generateRandomBST} from "../../algorithms/bstUtils.ts";
 
 type Props = {
     onOperation: (value: number) => void;
     onOperationChange: (value: number) => void;
     operationLabel: string;
+    setBST: (bst: BSTNode[]) => void
 }
 
-const BSTInput = ({operationLabel, onOperation, onOperationChange}: Props) => {
+const BSTInput = ({operationLabel, onOperation, onOperationChange, setBST}: Props) => {
     const [inputOperation, setInputOperation] = useState("");
     const [validationError, setValidationError] = useState("");
 
@@ -31,6 +34,10 @@ const BSTInput = ({operationLabel, onOperation, onOperationChange}: Props) => {
         onOperation(parseNumber(inputOperation));
     }
 
+    function randomBst() {
+        setBST(bstBfs(generateRandomBST(8, 0, 20)));
+    }
+
     return <div className="w-full">
         <div className="flex items-center justify-center gap-16 flex-wrap mb-4">
             <div className="flex flex-col items-center">
@@ -40,6 +47,10 @@ const BSTInput = ({operationLabel, onOperation, onOperationChange}: Props) => {
                            className="border border-neutral-700 py-2 px-4 rounded min-w-[200px] md:min-w-[300px]"
                            value={inputOperation} onChange={handleInputOperationChange}
                            placeholder="10" type="text" autoComplete="off"/>
+                    <button type="button" onClick={randomBst}
+                            className="bg-green-600 hover:bg-green-700 font-bold py-2 px-4 rounded cursor-pointer">
+                        <Dices></Dices>
+                    </button>
                     <button type="submit"
                             className="bg-green-600 hover:bg-green-700 font-bold py-2 px-4 rounded cursor-pointer">
                         <Play></Play>

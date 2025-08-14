@@ -5,6 +5,8 @@ import Graph from "./Graph.tsx";
 import EndAlgorithm from "../EndAlgorithm.tsx";
 import Controls from "../Controls.tsx";
 import {type GraphTraversalAction, type GraphTraversalState, useGraphTraversal} from "../../hooks/useGraphTraversal.ts";
+import {Dices, Play} from "lucide-react";
+import {generateRandomGraph} from "../../algorithms/graphUtils.ts";
 
 type Props = {
     algorithm: (root: GraphNode, graph: GraphNode[]) => Generator<any, void, unknown>;
@@ -13,16 +15,25 @@ type Props = {
 }
 
 const GraphTraversal = ({algorithm, setAlgorithmState, title}: Props) => {
-    const {traversalState, useAlgorithmData, nodeStateFunc} = useGraphTraversal(algorithm, setAlgorithmState);
+    const {traversalState, useAlgorithmData, nodeStateFunc, dispatch} = useGraphTraversal(algorithm, setAlgorithmState);
+
+    function randomGraph() {
+        dispatch({type: "SET_GRAPH", payload: generateRandomGraph(6)});
+    }
 
     return (
         <div className="flex flex-col items-start h-max flex-1">
             <h1 className="font-bold text-3xl text-center mb-10 self-center">{title}</h1>
-            <div className="flex justify-center item-center w-full">
+            <div className="flex justify-center item-center w-full gap-1">
+                <button type="button" onClick={randomGraph}
+                        className="bg-green-600 hover:bg-green-700 font-bold py-2 px-4 rounded cursor-pointer">
+                    <Dices></Dices>
+                </button>
                 {
                     traversalState.graph.length > 0 &&
                     <button className="bg-green-600 hover:bg-green-700 font-bold py-2 px-4 rounded cursor-pointer"
-                            onClick={() => useAlgorithmData.startAlgorithm(traversalState.graph[0])}>Начать
+                            onClick={() => useAlgorithmData.startAlgorithm(traversalState.graph[0])}>
+                        <Play></Play>
                     </button>
                 }
             </div>

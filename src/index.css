@@ -2,11 +2,24 @@
 
 :root {
     color: #fff;
-    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    font-family: "Source Code Pro", Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
 
 body, .dark-bg {
     background: #151515;
+}
+
+main::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-image: url("./assets/background.jpg");
+    background-size: cover;
+    opacity: 0.05;
+    z-index: -1;
 }
 
 #root {

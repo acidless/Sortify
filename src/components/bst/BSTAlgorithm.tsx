@@ -5,7 +5,7 @@ import EndAlgorithm from "../EndAlgorithm.tsx";
 import Controls from "../Controls.tsx";
 import {type BSTOperationAction, type BSTOperationState, useBSTOperation} from "../../hooks/useBSTOperation.ts";
 import type {BSTNode} from "../../types.ts";
-import type {RefObject} from "react";
+import {type RefObject, useState} from "react";
 
 type Props = {
     algo: (input: BSTNode, target: number) => Generator<any, void, unknown>,
@@ -15,17 +15,18 @@ type Props = {
 }
 
 const BSTAlgorithm = ({algo, setAlgorithmState, startBST, title}: Props) => {
+    const [bst, setBST] = useState(startBST);
     const {
         onOperation,
         onOperationChange,
         nodeStateFunc,
         useAlgorithmData,
         state
-    } = useBSTOperation(algo, setAlgorithmState, startBST);
+    } = useBSTOperation(algo, setAlgorithmState, bst);
 
     return <div className="flex flex-col items-start h-max">
         <h1 className="font-bold text-3xl text-center mb-10 self-center">{title}</h1>
-        <BSTSearchInput onOperation={onOperation} operationLabel="Введите значение для поиска"
+        <BSTSearchInput setBST={setBST} onOperation={onOperation} operationLabel="Введите значение для поиска"
                         onOperationChange={onOperationChange}/>
         <div className="flex-1 self-stretch flex flex-col justify-center items-center relative mt-24">
             <PopupText id={state.popupText} text={state.popupText}/>
