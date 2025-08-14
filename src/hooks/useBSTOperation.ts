@@ -54,7 +54,7 @@ export function useBSTOperation(algo: (input: BSTNode, target: number) => Genera
 
     useEffect(() => {
         dispatch({type: "SET_BST_NODES", payload: startBST});
-    }, []);
+    }, [startBST]);
 
     const algorithm = useCallback((input: BSTNode) => {
         return algo(input, state.targetNumber);

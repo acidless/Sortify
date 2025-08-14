@@ -102,6 +102,7 @@ export function useGraphTraversal(algo: (root: GraphNode, graph: GraphNode[]) =>
     return {
         traversalState: state,
         useAlgorithmData: algorithmData,
+        dispatch,
         nodeStateFunc
     };
 }
