@@ -75,7 +75,7 @@ function BSTDelete() {
         return `${a} = ${b}`;
     }
 
-    const onStart = useCallback((input: BSTNode, historyRef: RefObject<Array<any>>) => {
+    const onStart = useCallback((_input: BSTNode, historyRef: RefObject<Array<any>>) => {
         historyRef.current = [
             {
                 checkingNode: null,
