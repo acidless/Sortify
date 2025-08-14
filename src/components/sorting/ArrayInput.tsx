@@ -39,7 +39,7 @@ const ArrayInput = ({onInputChange, onSubmit}: Props) => {
     }
 
     return (
-        <div className="w-full flex flex-col items-center md:items-start">
+        <div className="w-full flex flex-col items-center">
             <label htmlFor="data-in">Введите входной массив</label>
             <form className="flex items-center gap-1" onSubmit={handleSubmit}>
                 <input id="data-in" className="border border-neutral-700 py-2 px-4 rounded min-w-[200px] md:min-w-[300px]"

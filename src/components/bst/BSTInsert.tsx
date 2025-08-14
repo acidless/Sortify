@@ -104,7 +104,9 @@ function BSTSearch() {
 
         switch (value.type) {
             case "compare":
-                dispatch({type: "SET_POPUP_TEXT", payload: makeComparison(value.node.value, state.insertingNumber)});
+                dispatch({type: "SET_POPUP_TEXT",
+                    payload: makeComparison(value.node.value, state.insertingNumber)});
+
                 dispatch({type: "SET_CHECKING_NODE", payload: value.node});
                 dispatch({type: "SET_INSERTED_NODE", payload: null});
                 break;
@@ -149,7 +151,7 @@ function BSTSearch() {
         startAlgorithm(state.bstNodes[0]);
     }
 
-    return <div className="h-full flex flex-col items-start h-max">
+    return <div className="flex flex-col items-start h-max">
         <h1 className="font-bold text-3xl text-center mb-10 self-center">BST Insert</h1>
         <BSTSearchInput onOperation={onOperation} operationLabel="Введите значение для вставки"
                         onOperationChange={onOperationChange}/>
