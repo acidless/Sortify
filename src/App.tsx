@@ -7,6 +7,7 @@ import MergeSort from "./components/sorting/MergeSort.tsx";
 import BSTSearch from "./components/bst/BSTSearch.tsx";
 import BSTInsert from "./components/bst/BSTInsert.tsx";
 import BSTDelete from "./components/bst/BSTDelete.tsx";
+import QuickSort from "./components/sorting/QuickSort.tsx";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
                     <Route path="/bubble-sort" element={<BubbleSort />} />
                     <Route path="/insertion-sort" element={<InsertionSort />} />
                     <Route path="/merge-sort" element={<MergeSort />} />
+                    <Route path="/quick-sort" element={<QuickSort />} />
                     <Route path="/bst-search" element={<BSTSearch />} />
                     <Route path="/bst-insert" element={<BSTInsert />} />
                     <Route path="/bst-delete" element={<BSTDelete />} />

@@ -1,5 +1,5 @@
 import BinarySearchTree from "./BinarySearchTree.tsx";
-import {type RefObject, useCallback, useEffect, useReducer, useRef, useState} from "react";
+import {type RefObject, useCallback, useEffect, useReducer, useRef} from "react";
 import useAlgorithm from "../../hooks/useAlgorithm.ts";
 import type {BSTNode} from "../../types.ts";
 import {bstSearch} from "../../algorithms/bstSearch.ts";
