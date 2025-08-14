@@ -8,7 +8,7 @@ export type BSTDeleteAction =
     | { type: "delete-leaf"; node: BSTNode }
     | { type: "delete-single-child"; node: BSTNode }
     | { type: "replace-with-successor"; node: BSTNode; successor: BSTNode }
-    | { type: "deleted"; node: BSTNode | null };
+    | { type: "found"; node: BSTNode | null };
 
 export function* bstDelete(root: BSTNode | null, value: number): Generator<BSTDeleteAction, void, unknown> {
     function* deleteRec(node: BSTNode | null): Generator<BSTDeleteAction, BSTNode | null, unknown> {
@@ -70,5 +70,5 @@ export function* bstDelete(root: BSTNode | null, value: number): Generator<BSTDe
     }
 
     const newRoot = yield* deleteRec(root);
-    yield {type: "deleted", node: newRoot};
+    yield {type: "found", node: newRoot};
 }

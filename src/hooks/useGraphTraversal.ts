@@ -101,8 +101,6 @@ export function useGraphTraversal(algo: (root: GraphNode, graph: GraphNode[]) =>
 
     return {
         traversalState: state,
-        traversalDispatch: dispatch,
-        traversalStateRef: stateRef,
         useAlgorithmData: algorithmData,
         nodeStateFunc
     };
