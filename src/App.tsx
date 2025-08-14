@@ -9,6 +9,7 @@ import BSTInsert from "./components/bst/BSTInsert.tsx";
 import BSTDelete from "./components/bst/BSTDelete.tsx";
 import QuickSort from "./components/sorting/QuickSort.tsx";
 import BFS from "./components/graphs/BFS.tsx";
+import DFS from "./components/graphs/DFS.tsx";
 
 function App() {
     return (
@@ -23,6 +24,7 @@ function App() {
                         <Route path="/merge-sort" element={<MergeSort/>}/>
                         <Route path="/quick-sort" element={<QuickSort/>}/>
                         <Route path="/bfs" element={<BFS/>}/>
+                        <Route path="/dfs" element={<DFS/>}/>
                         <Route path="/bst-search" element={<BSTSearch/>}/>
                         <Route path="/bst-insert" element={<BSTInsert/>}/>
                         <Route path="/bst-delete" element={<BSTDelete/>}/>
