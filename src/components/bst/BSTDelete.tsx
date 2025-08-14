@@ -121,7 +121,7 @@ function BSTDelete() {
             case "compare":
                 dispatch({
                     type: "SET_POPUP_TEXT",
-                    payload: makeComparison(value.node.value, state.deletingNumber),
+                    payload: makeComparison(value.node.value, stateRef.current.deletingNumber),
                 });
                 dispatch({type: "SET_CHECKING_NODE", payload: value.node});
                 break;

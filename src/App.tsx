@@ -8,27 +8,29 @@ import BSTSearch from "./components/bst/BSTSearch.tsx";
 import BSTInsert from "./components/bst/BSTInsert.tsx";
 import BSTDelete from "./components/bst/BSTDelete.tsx";
 import QuickSort from "./components/sorting/QuickSort.tsx";
+import BFS from "./components/graphs/BFS.tsx";
 
 function App() {
-  return (
-    <div className="flex h-max min-h-full">
-        <BrowserRouter>
-            <SideMenu></SideMenu>
-            <main className="p-4 md:p-10 w-full h-max min-h-full flex flex-col">
-                <Routes>
-                    <Route path="/" element={<p>Home</p>} />
-                    <Route path="/bubble-sort" element={<BubbleSort />} />
-                    <Route path="/insertion-sort" element={<InsertionSort />} />
-                    <Route path="/merge-sort" element={<MergeSort />} />
-                    <Route path="/quick-sort" element={<QuickSort />} />
-                    <Route path="/bst-search" element={<BSTSearch />} />
-                    <Route path="/bst-insert" element={<BSTInsert />} />
-                    <Route path="/bst-delete" element={<BSTDelete />} />
-                </Routes>
-            </main>
-        </BrowserRouter>
-    </div>
-  )
+    return (
+        <div className="flex h-max min-h-full">
+            <BrowserRouter>
+                <SideMenu></SideMenu>
+                <main className="p-4 md:p-10 w-full h-max min-h-full flex flex-col">
+                    <Routes>
+                        <Route path="/" element={<p>Home</p>}/>
+                        <Route path="/bubble-sort" element={<BubbleSort/>}/>
+                        <Route path="/insertion-sort" element={<InsertionSort/>}/>
+                        <Route path="/merge-sort" element={<MergeSort/>}/>
+                        <Route path="/quick-sort" element={<QuickSort/>}/>
+                        <Route path="/bfs" element={<BFS/>}/>
+                        <Route path="/bst-search" element={<BSTSearch/>}/>
+                        <Route path="/bst-insert" element={<BSTInsert/>}/>
+                        <Route path="/bst-delete" element={<BSTDelete/>}/>
+                    </Routes>
+                </main>
+            </BrowserRouter>
+        </div>
+    )
 }
 
 export default App
