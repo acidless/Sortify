@@ -109,7 +109,7 @@ function BSTSearch() {
             case "compare":
                 dispatch({
                     type: "SET_POPUP_TEXT",
-                    payload: makeComparison(value.node.value, state.findingNumber)
+                    payload: makeComparison(value.node.value, stateRef.current.findingNumber)
                 });
                 dispatch({type: "SET_CHECKING_NODE", payload: value.node});
                 dispatch({type: "SET_FOUND_NODE", payload: null});

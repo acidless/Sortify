@@ -105,7 +105,7 @@ function BSTSearch() {
         switch (value.type) {
             case "compare":
                 dispatch({type: "SET_POPUP_TEXT",
-                    payload: makeComparison(value.node.value, state.insertingNumber)});
+                    payload: makeComparison(value.node.value, stateRef.current.insertingNumber)});
 
                 dispatch({type: "SET_CHECKING_NODE", payload: value.node});
                 dispatch({type: "SET_INSERTED_NODE", payload: null});
@@ -119,7 +119,7 @@ function BSTSearch() {
                 dispatch({type: "SET_POPUP_TEXT", payload: `Элемент вставлен!`});
                 dispatch({type: "SET_INSERTED_NODE", payload: value.node});
                 dispatch({type: "SET_CHECKING_NODE", payload: null});
-                dispatch({type: "SET_BST_NODES", payload: [...state.bstNodes, value.node]});
+                dispatch({type: "SET_BST_NODES", payload: [...stateRef.current.bstNodes, value.node]});
                 break;
         }
     }

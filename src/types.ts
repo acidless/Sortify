@@ -7,4 +7,10 @@ export type BSTNode = {
     id: string;
 };
 
+export type GraphNode = {
+    id: string;
+    value: any;
+    neighbors: string[];
+};
+
 export type PositionedNode = BSTNode & { x: number; y: number };
