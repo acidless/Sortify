@@ -107,7 +107,10 @@ function BSTSearch() {
 
         switch (value.type) {
             case "compare":
-                dispatch({type: "SET_POPUP_TEXT", payload: makeComparison(value.node.value, state.findingNumber)});
+                dispatch({
+                    type: "SET_POPUP_TEXT",
+                    payload: makeComparison(value.node.value, state.findingNumber)
+                });
                 dispatch({type: "SET_CHECKING_NODE", payload: value.node});
                 dispatch({type: "SET_FOUND_NODE", payload: null});
                 break;
@@ -150,18 +153,19 @@ function BSTSearch() {
         startAlgorithm(state.bstNodes[0]);
     }
 
-    return <div className="h-full flex flex-col items-start h-max">
+    return <div className="flex flex-col items-start h-max">
         <h1 className="font-bold text-3xl text-center mb-10 self-center">BST Search</h1>
         <BSTSearchInput onOperation={onOperation} operationLabel="Введите значение для поиска"
                         onOperationChange={onOperationChange}/>
         <div className="flex-1 self-stretch flex flex-col justify-center items-center relative mt-24">
             <PopupText id={state.popupText} text={state.popupText}/>
             {state.bstNodes.length ? <BinarySearchTree nodeStateFunc={nodeStateFunc} root={state.bstNodes[0]}
-                                                 size={state.bstNodes.length}></BinarySearchTree> : null}
+                                                       size={state.bstNodes.length}></BinarySearchTree> : null}
             <EndAlgorithm isDone={algorithmState.isDone} bottom="bottom-12"/>
         </div>
         <Controls stepBack={stepBack} stepForward={stepForward} toggleAlgorithm={toggleAlgorithm}
-                  firstState={algorithmState.firstState} isPaused={algorithmState.isPaused} isDone={algorithmState.isDone}></Controls>
+                  firstState={algorithmState.firstState} isPaused={algorithmState.isPaused}
+                  isDone={algorithmState.isDone}></Controls>
     </div>
 }
 

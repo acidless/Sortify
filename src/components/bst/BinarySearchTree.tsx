@@ -1,7 +1,6 @@
 import type {BSTNode as NodeType, PositionedNode} from "../../types.ts";
 import {useEffect, useLayoutEffect, useRef, useState} from "react";
 import BSTNode from "./BSTNode.tsx";
-import {Infinity} from "lucide-react";
 
 type Props = {
     root: NodeType | null;
