@@ -5,7 +5,7 @@ type Props = {
 
 const EndAlgorithm = ({isDone, bottom = "-bottom-8"}: Props) => {
     return <div
-        className={`absolute ${bottom} left-1/2 -translate-x-1/2 w-max text-center transition-all duration-500 ${isDone ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}>
+        className={`absolute ${bottom} left-1/2 -translate-x-1/2 w-max text-center transition-all bg-neutral-800 rounded-2xl px-4 py-2 duration-500 ${isDone ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}>
         <p className="text-xl text-green-400">Работа алгоритма завершена</p>
     </div>
 }

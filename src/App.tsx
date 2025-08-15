@@ -10,13 +10,14 @@ import BSTDelete from "./components/bst/BSTDelete.tsx";
 import QuickSort from "./components/sorting/QuickSort.tsx";
 import BFS from "./components/graphs/BFS.tsx";
 import DFS from "./components/graphs/DFS.tsx";
+import Theory from "./components/Theory.tsx";
 
 function App() {
     return (
-        <div className="flex h-max min-h-full">
+        <div className="flex h-max min-h-full overflow-hidden">
             <BrowserRouter>
                 <SideMenu></SideMenu>
-                <main className="p-4 md:p-10 w-full h-max min-h-full flex flex-col">
+                <main className="p-4 md:p-10 w-full h-max min-h-full flex flex-col overflow-hidden relative">
                     <Routes>
                         <Route path="/" element={<p>Home</p>}/>
                         <Route path="/bubble-sort" element={<BubbleSort/>}/>
@@ -29,6 +30,7 @@ function App() {
                         <Route path="/bst-insert" element={<BSTInsert/>}/>
                         <Route path="/bst-delete" element={<BSTDelete/>}/>
                     </Routes>
+                    <Theory/>
                 </main>
             </BrowserRouter>
         </div>
