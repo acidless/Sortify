@@ -9,6 +9,10 @@ body, .dark-bg {
     background: #151515;
 }
 
+main {
+    width: 100dvw;
+}
+
 main::before {
     content: "";
     position: fixed;
@@ -26,4 +30,9 @@ main::before {
     height: 100dvh;
     display: flex;
     flex-direction: column;
+}
+
+.orientation-vertical {
+    writing-mode: sideways-lr;
+    text-orientation: mixed;
 }
