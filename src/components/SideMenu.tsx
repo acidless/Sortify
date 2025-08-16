@@ -10,7 +10,7 @@ import {NavLink} from "react-router";
 import {useState} from "react";
 
 function SideMenu() {
-    const [isMenuOpen, setIsMenuOpen] = useState(true);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     return (
         <>
