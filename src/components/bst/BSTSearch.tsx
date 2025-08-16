@@ -1,10 +1,83 @@
-import type {RefObject} from "react";
+import {type RefObject, useContext, useEffect} from "react";
 import type {BSTOperationAction, BSTOperationState} from "../../hooks/useBSTOperation.ts";
 import BSTAlgorithm from "./BSTAlgorithm.tsx";
 import {bstBfs, generateRandomBST} from "../../algorithms/bstUtils.ts";
 import {bstSearch} from "../../algorithms/bstSearch.ts";
+import {TheoryContext} from "../../TheoryContext.ts";
+
+function BSTSearchTheory() {
+    return <>
+        <h3 className="mb-6">📌 Поиск в бинарном дереве поиска (Binary Search Tree, BST)</h3>
+
+        <h4 className="mb-2">💡 Идея алгоритма</h4>
+        <p className="mb-6 text-base font-light leading-6">
+            Поиск в бинарном дереве поиска — это алгоритм для поиска узла в бинарном дереве, который использует свойства бинарного дерева поиска:
+            для любого узла, все значения в левом поддереве меньше, а все значения в правом поддереве больше значения узла.
+            Это позволяет эффективно находить узлы, начиная с корневого узла и рекурсивно или итеративно перемещаясь влево или вправо в зависимости от искомого значения.
+        </p>
+
+        <h4 className="mb-2">⏱ Сложность</h4>
+        <table className="mb-2 text-base font-light leading-6 text-left border-collapse">
+            <thead>
+            <tr>
+                <th className="border-neutral-700 border-1 p-2">Случай</th>
+                <th className="border-neutral-700 border-1 p-2">Время</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td className="border-neutral-700 border-1 p-2">Худший</td>
+                <td className="border-neutral-700 border-1 p-2">O(h)</td>
+            </tr>
+            <tr>
+                <td className="border-neutral-700 border-1 p-2">Средний</td>
+                <td className="border-neutral-700 border-1 p-2">O(logn)</td>
+            </tr>
+            <tr>
+                <td className="border-neutral-700 border-1 p-2">Лучший</td>
+                <td className="border-neutral-700 border-1 p-2">O(1)</td>
+            </tr>
+            </tbody>
+        </table>
+        <p className="mb-6 text-base font-light leading-6">Память: O(h)</p>
+
+        <h4 className="mb-2">🧠 Пошаговое объяснение</h4>
+        <ol className="list-decimal list-inside mb-6 text-base font-light leading-6">
+            <li>Начните с корневого узла.</li>
+            <li>Сравните искомое значение с значением текущего узла.</li>
+            <li>Если значение совпадает, узел найден.</li>
+            <li>Если искомое значение меньше текущего узла, переходите в левое поддерево.</li>
+            <li>Если искомое значение больше текущего узла, переходите в правое поддерево.</li>
+            <li>Повторяйте шаги 2-5, пока не найдете узел или не достигнете конца дерева.</li>
+        </ol>
+
+        <h4 className="mb-2">📄 Псевдокод</h4>
+        <pre className="bg-gray-900 p-4 rounded-md text-sm font-light mb-4">
+      <code>
+        {`procedure searchBST(node, val)
+    if node is null then
+        return null
+    if val == node.val then
+        return node
+    else if val < node.val then
+        return searchBST(node.left, val)
+    return searchBST(node.right, val)
+
+procedure startSearchBST(root, val)
+    return searchBST(root, val)
+end procedure`}
+      </code>
+    </pre>
+    </>
+}
 
 function BSTSearch() {
+    const {setTheory} = useContext(TheoryContext);
+
+    useEffect(() => {
+        setTheory(<BSTSearchTheory/>);
+    }, []);
+
     function setAlgorithmState(value: any, dispatch: React.Dispatch<BSTOperationAction>, stateRef: RefObject<BSTOperationState>, makeComparison: (a: number, b: number) => string) {
         switch (value.type) {
             case "compare":

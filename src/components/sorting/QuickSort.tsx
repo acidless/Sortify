@@ -1,7 +1,8 @@
-import {useEffect, useReducer, useRef} from "react";
+import {useContext, useEffect, useReducer, useRef} from "react";
 import SortingAlgorithm from "./SortingAlgorithm.tsx";
 import {quickSort, type QuickSortAction} from "../../algorithms/quickSort.ts";
 import type {SampleArray} from "../../types.ts";
+import { TheoryContext } from "../../TheoryContext.ts";
 
 type State = {
     pivotIndex: number | undefined;
@@ -43,13 +44,90 @@ function reducer(state: State, action: Action): State {
     }
 }
 
+function QuickSortTheory() {
+    return <>
+        <h3 className="mb-6">📌 Быстрая сортировка (Quick Sort)</h3>
+
+        <h4 className="mb-2">💡 Идея алгоритма</h4>
+        <p className="mb-6 text-base font-light leading-6">
+            Быстрая сортировка — это эффективный алгоритм сортировки, который также использует метод "разделяй и властвуй".
+            Алгоритм выбирает опорный элемент (pivot) из массива и разделяет остальные элементы на две группы: элементы, меньшие опорного, и элементы, большие опорного.
+            Затем он рекурсивно сортирует обе группы. Этот процесс продолжается, пока массив не будет отсортирован.
+            Быстрая сортировка часто сравнивается с процессом сортировки карт: вы берете одну карту (опорный элемент) и делите остальные карты на две группы — те, что меньше, и те, что больше.
+        </p>
+
+        <h4 className="mb-2">⏱ Сложность</h4>
+        <table className="mb-2 text-base font-light leading-6 text-left border-collapse">
+            <thead>
+            <tr>
+                <th className="border-neutral-700 border-1 p-2">Случай</th>
+                <th className="border-neutral-700 border-1 p-2">Время</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td className="border-neutral-700 border-1 p-2">Худший</td>
+                <td className="border-neutral-700 border-1 p-2">O(n²)</td>
+            </tr>
+            <tr>
+                <td className="border-neutral-700 border-1 p-2">Средний</td>
+                <td className="border-neutral-700 border-1 p-2">O(n*logn)</td>
+            </tr>
+            <tr>
+                <td className="border-neutral-700 border-1 p-2">Лучший (отсортированный массив)</td>
+                <td className="border-neutral-700 border-1 p-2">O(n*logn)</td>
+            </tr>
+            </tbody>
+        </table>
+        <p className="mb-6 text-base font-light leading-6">Память: O(logn)</p>
+
+        <h4 className="mb-2">🧠 Пошаговое объяснение</h4>
+        <ol className="list-decimal list-inside mb-6 text-base font-light leading-6">
+            <li>Если массив содержит один или ноль элементов, он уже отсортирован.</li>
+            <li>Выберите опорный элемент из массива.</li>
+            <li>Разделите массив на две части: элементы меньше опорного и элементы больше опорного.</li>
+            <li>Рекурсивно отсортируйте обе части.</li>
+            <li>Объедините отсортированные части, чтобы получить окончательный отсортированный массив.</li>
+        </ol>
+
+        <h4 className="mb-2">📄 Псевдокод</h4>
+        <pre className="bg-gray-900 p-4 rounded-md text-sm font-light mb-4">
+      <code>
+        {`procedure quickSort(A, low, high)
+    if low >= high then
+        return
+        
+    pivotIndex = partition(A, low, high)
+    quickSort(A, low, pivotIndex - 1)
+    quickSort(A, pivotIndex + 1, high)
+
+procedure partition(A, low, high)
+    pivot = A[high]
+    i = low - 1
+    for j = low to high - 1 do
+        if A[j] < pivot then
+            i = i + 1
+            swap A[i] with A[j]
+    swap A[i + 1] with A[high]
+    return i + 1
+end procedure`}
+      </code>
+    </pre>
+    </>
+}
+
 function QuickSort() {
+    const {setTheory} = useContext(TheoryContext);
     const [state, dispatch] = useReducer(reducer, initialState);
     const stateRef = useRef<State>(state);
 
     useEffect(() => {
         stateRef.current = state;
     }, [state]);
+
+    useEffect(() => {
+        setTheory(<QuickSortTheory/>);
+    }, []);
 
     function makeSnapshot() {
         return {
