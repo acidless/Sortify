@@ -47,19 +47,21 @@ const ArrayInput = ({onInputChange, onSubmit}: Props) => {
         <div className="w-full flex flex-col items-center">
             <div>
                 <label htmlFor="data-in">Введите входной массив</label>
-                <form className="flex items-center gap-1" onSubmit={handleSubmit}>
+                <form className="flex items-center gap-1 flex-col sm:flex-row" onSubmit={handleSubmit}>
                     <input id="data-in"
                            className="border border-neutral-700 py-2 px-4 rounded min-w-[200px] md:min-w-[300px]"
                            value={input} onChange={handleInputChange}
                            placeholder="[3, 5, 1, 2]" type="text" autoComplete="off"/>
-                    <button type="button" onClick={randomSubmit}
-                            className="bg-green-600 hover:bg-green-700 font-bold py-2 px-4 rounded cursor-pointer">
-                        <Dices></Dices>
-                    </button>
-                    <button type="submit"
-                            className="bg-green-600 hover:bg-green-700 font-bold py-2 px-4 rounded cursor-pointer">
-                        <Play></Play>
-                    </button>
+                    <div className="flex items-center gap-1">
+                        <button type="button" onClick={randomSubmit}
+                                className="bg-green-600 hover:bg-green-700 font-bold py-2 px-4 rounded cursor-pointer">
+                            <Dices></Dices>
+                        </button>
+                        <button type="submit"
+                                className="bg-green-600 hover:bg-green-700 font-bold py-2 px-4 rounded cursor-pointer">
+                            <Play></Play>
+                        </button>
+                    </div>
                 </form>
                 {validationError && <p className="text-red-600">{validationError}</p>}
             </div>

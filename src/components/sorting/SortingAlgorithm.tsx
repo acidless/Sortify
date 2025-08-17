@@ -99,7 +99,7 @@ const SortingAlgorithm = ({
                 <div className="relative max-w-full">
                     <ComparisionIndices array={array}
                                         indecies={checkingIndices}></ComparisionIndices>
-                    <div className="flex gap-1 justify-center max-w-full mb-10">
+                    <div className="flex gap-1 justify-start max-w-full mb-10 overflow-x-auto overflow-y-hidden">
                         {array.map((item, index) => (
                             <ArrayNode key={item.key} value={item.value} className={classNameFn(index, item.key)}></ArrayNode>
                         ))}

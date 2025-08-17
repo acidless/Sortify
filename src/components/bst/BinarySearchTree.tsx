@@ -30,10 +30,10 @@ const BinarySearchTree = ({ root, nodeStateFunc, size }: Props) =>  {
         const edges: Array<{ from: string; to: string }> = [];
         let mostDeepPosY = 0;
 
-        function traverse(node: NodeType | null, x: number, y: number, depth: number) {
+        function traverse(node: NodeType | null, x: number, y: number, depth: number, baseSpacing: number) {
             if (!node) return;
 
-            if(y > mostDeepPosY) {
+            if (y > mostDeepPosY) {
                 mostDeepPosY = y;
             }
 
@@ -41,17 +41,19 @@ const BinarySearchTree = ({ root, nodeStateFunc, size }: Props) =>  {
 
             if (node.left) {
                 edges.push({ from: node.id, to: node.left.id });
-                traverse(node.left, x - 350 / (depth + 1), y + 120, depth + 1);
+                traverse(node.left, x - baseSpacing / (depth + 1), y + 100, depth + 1, baseSpacing);
             }
 
             if (node.right) {
                 edges.push({ from: node.id, to: node.right.id });
-                traverse(node.right, x + 350 / (depth + 1), y + 120, depth + 1);
+                traverse(node.right, x + baseSpacing / (depth + 1), y + 100, depth + 1, baseSpacing);
             }
         }
 
 
-        traverse(root, svgWrapperRef.current!.clientWidth / 2, 75, 1);
+        const width = svgWrapperRef.current!.clientWidth;
+        const baseSpacing = Math.min(300, width / 2);
+        traverse(root, width / 2, 75, 1, baseSpacing);
         svgWrapperRef.current!.style.height = `${mostDeepPosY + 150}px`;
 
         setNodes(positions);
@@ -85,7 +87,7 @@ const BinarySearchTree = ({ root, nodeStateFunc, size }: Props) =>  {
     }, [nodes]);
 
     return (
-        <div ref={svgWrapperRef} className="relative w-full h-full">
+        <div ref={svgWrapperRef} className="relative w-full h-full overflow-x-auto tree-container">
             <svg className="absolute top-0 left-0 w-full h-full pointer-events-none">
                 {absoluteLines.map((line, i) => (
                     <line

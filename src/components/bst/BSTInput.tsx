@@ -42,19 +42,22 @@ const BSTInput = ({operationLabel, onOperation, onOperationChange, setBST}: Prop
         <div className="flex items-center justify-center gap-16 flex-wrap mb-4">
             <div className="flex flex-col items-center">
                 <label htmlFor="data-in">{operationLabel}</label>
-                <form className="flex items-center gap-1" onSubmit={handleOperation}>
+                <form className="flex items-center gap-1 flex-col sm:flex-row" onSubmit={handleOperation}>
                     <input id="data-in"
                            className="border border-neutral-700 py-2 px-4 rounded min-w-[200px] md:min-w-[300px]"
                            value={inputOperation} onChange={handleInputOperationChange}
                            placeholder="10" type="text" autoComplete="off"/>
-                    <button type="button" onClick={randomBst}
-                            className="bg-green-600 hover:bg-green-700 font-bold py-2 px-4 rounded cursor-pointer">
-                        <Dices></Dices>
-                    </button>
-                    <button type="submit"
-                            className="bg-green-600 hover:bg-green-700 font-bold py-2 px-4 rounded cursor-pointer">
-                        <Play></Play>
-                    </button>
+                    <div className="flex items-center gap-1">
+                        <button type="button" onClick={randomBst}
+                                className="bg-green-600 hover:bg-green-700 font-bold py-2 px-4 rounded cursor-pointer">
+                            <Dices></Dices>
+                        </button>
+                        <button type="submit"
+                                className="bg-green-600 hover:bg-green-700 font-bold py-2 px-4 rounded cursor-pointer">
+                            <Play></Play>
+                        </button>
+                    </div>
+
                 </form>
             </div>
         </div>

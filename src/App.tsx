@@ -10,7 +10,6 @@ import BSTDelete from "./components/bst/BSTDelete.tsx";
 import QuickSort from "./components/sorting/QuickSort.tsx";
 import BFS from "./components/graphs/BFS.tsx";
 import DFS from "./components/graphs/DFS.tsx";
-import Theory from "./components/Theory.tsx";
 import Home from "./components/Home.tsx";
 import {useState} from "react";
 import { TheoryContext } from './TheoryContext.ts';
@@ -20,11 +19,11 @@ function App() {
     const [theory, setTheory] = useState(null);
 
     return (
-        <div className="flex h-max min-h-full overflow-hidden">
+        <div className="flex h-max min-h-full overflow-x-hidden">
             <TheoryContext.Provider value={{theory, setTheory}}>
                 <BrowserRouter>
                     <SideMenu></SideMenu>
-                    <main className="p-4 md:p-10 w-full h-max min-h-full flex flex-col overflow-hidden relative">
+                    <main className="p-4 md:p-10 w-full h-max min-h-full flex flex-col overflow-x-hidden relative">
                         <Routes>
                             <Route path="/" element={<Home/>}/>
                             <Route path="/bubble-sort" element={<BubbleSort/>}/>
@@ -38,7 +37,6 @@ function App() {
                             <Route path="/bst-insert" element={<BSTInsert/>}/>
                             <Route path="/bst-delete" element={<BSTDelete/>}/>
                         </Routes>
-                        <Theory/>
                     </main>
                 </BrowserRouter>
             </TheoryContext.Provider>
