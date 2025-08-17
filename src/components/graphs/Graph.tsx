@@ -5,11 +5,13 @@ import type {GraphNode} from "../../types.ts";
 type GraphProps = {
     nodes: GraphNode[];
     nodeStateFunc: (id: string) => string;
+    weighted: boolean;
+    directed: boolean;
 };
 
-function Graph({ nodes, nodeStateFunc }: GraphProps) {
+function Graph({nodes, nodeStateFunc, weighted = false, directed = false}: GraphProps) {
     const [positions, setPositions] = useState<Record<string, { x: number; y: number }>>({});
-    const [edges, setEdges] = useState<Array<{ from: string; to: string }>>([]);
+    const [edges, setEdges] = useState<Array<{ from: string; to: string, weight: number }>>([]);
     const svgWrapperRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
@@ -33,7 +35,8 @@ function Graph({ nodes, nodeStateFunc }: GraphProps) {
         const newEdges = nodes.flatMap((node) =>
             node.neighbors.map((neighbor) => ({
                 from: node.id,
-                to: neighbor
+                to: neighbor.to,
+                weight: neighbor.weight,
             }))
         );
 
@@ -41,20 +44,85 @@ function Graph({ nodes, nodeStateFunc }: GraphProps) {
         setEdges(newEdges);
     }, [nodes]);
 
+    function offsetPoint(x1: number, y1: number, x2: number, y2: number, r: number) {
+        const dx = x2 - x1;
+        const dy = y2 - y1;
+        const len = Math.sqrt(dx * dx + dy * dy);
+        if (len === 0) return {x: x2, y: y2};
+        const ratio = (len - r) / len;
+        return {
+            x: x1 + dx * ratio,
+            y: y1 + dy * ratio,
+        };
+    }
+
     return (
         <div ref={svgWrapperRef} className="relative w-full h-full flex-1">
             <svg className="absolute top-0 left-0 w-full h-full pointer-events-none">
-                {edges.map((line, i) => (
-                    <line
-                        key={i}
-                        x1={positions[line.from]?.x ?? 0}
-                        y1={positions[line.from]?.y ?? 0}
-                        x2={positions[line.to]?.x ?? 0}
-                        y2={positions[line.to]?.y ?? 0}
-                        stroke="white"
-                        strokeWidth="2"
-                    />
-                ))}
+                <defs>
+                    <marker
+                        id="arrow"
+                        viewBox="0 0 10 10"
+                        refX="9"
+                        refY="5"
+                        markerWidth="6"
+                        markerHeight="6"
+                        orient="auto"
+                    >
+                        <path d="M 0 0 L 10 5 L 0 10 z" fill="white"/>
+                    </marker>
+                </defs>
+
+                {edges.map((line, i) => {
+                    const x1 = positions[line.from]?.x ?? 0;
+                    const y1 = positions[line.from]?.y ?? 0;
+                    const x2 = positions[line.to]?.x ?? 0;
+                    const y2 = positions[line.to]?.y ?? 0;
+
+                    const {x: endX, y: endY} = offsetPoint(x1, y1, x2, y2, 50);
+
+                    const midX = (x1 + x2) / 2;
+                    const midY = (y1 + y2) / 2;
+
+                    return (
+                        <g key={i}>
+                            <line
+                                x1={x1}
+                                y1={y1}
+                                x2={endX}
+                                y2={endY}
+                                stroke="white"
+                                strokeWidth="2"
+                                markerEnd={directed ? "url(#arrow)" : undefined}
+                            />
+                            {weighted &&
+                                <>
+                                    <rect
+                                        x={midX - 14}
+                                        y={midY - 14}
+                                        width="28"
+                                        height="22"
+                                        rx="4"
+                                        ry="4"
+                                        fill="black"
+                                        opacity="1"
+                                    />
+                                    <text
+                                        x={midX}
+                                        y={midY}
+                                        fill="green"
+                                        fontSize="18"
+                                        textAnchor="middle"
+                                        dy="2"
+                                        z="10"
+                                    >
+                                        {line.weight}
+                                    </text>
+                                </>
+                            }
+                        </g>
+                    );
+                })}
             </svg>
 
             {nodes.map((node) => (
