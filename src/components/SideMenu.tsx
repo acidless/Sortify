@@ -6,11 +6,16 @@ import {
     Move, Plus,
     RabbitIcon, Route, Search, X
 } from "lucide-react";
-import {NavLink} from "react-router";
-import {useState} from "react";
+import {NavLink, useLocation} from "react-router";
+import {useEffect, useState} from "react";
 
 function SideMenu() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const location = useLocation();
+
+    useEffect(() => {
+        setIsMenuOpen(false);
+    }, [location]);
 
     return (
         <>
@@ -19,7 +24,7 @@ function SideMenu() {
                 <Menu className="w-8 h-8"></Menu>
             </button>
             <aside
-                className={`max-w-sm w-full h-full py-10 px-8 border-r border-b dark-bg z-100 transition-all duration-300 border-neutral-700 2xl:sticky fixed ${isMenuOpen ? "left-0" : "-left-full"}`}>
+                className={`max-w-sm w-full h-full pt-8 px-8 border-r border-b dark-bg z-100 overflow-auto transition-all duration-300 border-neutral-700 2xl:sticky fixed ${isMenuOpen ? "left-0" : "-left-full"}`}>
                 <h2 className="font-bold text-3xl mb-10">Выбор алгоритма</h2>
                 <button onClick={() => setIsMenuOpen(false)}
                         className="cursor-pointer absolute top-4 right-4 2xl:hidden block">
