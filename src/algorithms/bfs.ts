@@ -1,4 +1,4 @@
-import type { GraphNode } from "../types.ts";
+import type {GraphNode} from "../types.ts";
 
 export type BFSAction =
     | { type: "visit"; node: GraphNode }
@@ -18,11 +18,11 @@ export function* bfs(root: GraphNode, nodes: GraphNode[]): Generator<BFSAction, 
         yield { type: "visit", node: current };
 
         for (const neighborId of current.neighbors) {
-            if (!visited.has(neighborId)) {
-                const neighbor = nodes.find(n => n.id === neighborId);
+            if (!visited.has(neighborId.to)) {
+                const neighbor = nodes.find(n => n.id === neighborId.to);
                 if (neighbor) {
                     queue.push(neighbor);
-                    visited.add(neighborId);
+                    visited.add(neighborId.to);
 
                     yield { type: "enqueue", node: neighbor };
                 }

@@ -1,6 +1,6 @@
 import type {GraphNode} from "../types.ts";
 
-export function generateRandomGraph(nodeCount: number,edgeProbability: number = 0.3): GraphNode[] {
+export function generateRandomGraph(nodeCount: number, edgeProbability: number = 0.3, directed = false): GraphNode[] {
     const nodes: GraphNode[] = [];
 
     for (let i = 0; i < nodeCount; i++) {
@@ -14,10 +14,12 @@ export function generateRandomGraph(nodeCount: number,edgeProbability: number = 
     for (let i = 0; i < nodeCount; i++) {
         for (let j = i + 1; j < nodeCount; j++) {
             if (Math.random() < edgeProbability) {
-                const weight = Math.floor(Math.random() * 100);
+                const weight = Math.floor(Math.random() * 20);
 
-                nodes[i].neighbors.push({ to: nodes[j].id, weight });
-                nodes[j].neighbors.push({ to: nodes[i].id, weight });
+                nodes[i].neighbors.push({to: nodes[j].id, weight});
+                if(!directed) {
+                    nodes[j].neighbors.push({to: nodes[i].id, weight});
+                }
             }
         }
     }

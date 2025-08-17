@@ -4,12 +4,13 @@ import type {GraphNode} from "../../types.ts";
 
 type GraphProps = {
     nodes: GraphNode[];
+    distances?: Map<string, number>;
     nodeStateFunc: (id: string) => string;
-    weighted: boolean;
-    directed: boolean;
+    weighted?: boolean;
+    directed?: boolean;
 };
 
-function Graph({nodes, nodeStateFunc, weighted = false, directed = false}: GraphProps) {
+function Graph({nodes, nodeStateFunc, weighted = false, directed = false, distances=new Map()}: GraphProps) {
     const [positions, setPositions] = useState<Record<string, { x: number; y: number }>>({});
     const [edges, setEdges] = useState<Array<{ from: string; to: string, weight: number }>>([]);
     const svgWrapperRef = useRef<HTMLDivElement | null>(null);
@@ -54,6 +55,20 @@ function Graph({nodes, nodeStateFunc, weighted = false, directed = false}: Graph
             x: x1 + dx * ratio,
             y: y1 + dy * ratio,
         };
+    }
+
+    function makeNodeValue(node: GraphNode) {
+        let value = node.value.toString();
+        if(distances.has(node.id)) {
+            let distance = distances.get(node.id)!.toString();
+            if(distance === "Infinity") {
+                distance = "Inf";
+            }
+
+            value = `${value},${distance}`;
+        }
+
+        return value;
     }
 
     return (
@@ -129,7 +144,8 @@ function Graph({nodes, nodeStateFunc, weighted = false, directed = false}: Graph
                 <BSTNode
                     key={node.id}
                     id={node.id}
-                    node={node.value}
+                    node={makeNodeValue(node)}
+                    fontSize={distances.has(node.id) ? "text-2xl" : "text-3xl"}
                     x={positions[node.id]?.x ?? 0}
                     y={positions[node.id]?.y ?? 0}
                     stateFunc={nodeStateFunc}

@@ -80,11 +80,11 @@ function SideMenu() {
                             </NavLink>
                         </li>
                         <li>
-                            <NavLink to="/djikstra" className={({isActive}) =>
+                            <NavLink to="/dijkstra" className={({isActive}) =>
                                 (isActive ? "text-green-400" : "") + " flex flex-col items-center"
                             }>
                                 <Route className="w-16 h-16"></Route>
-                                Djikstra
+                                Dijkstra
                             </NavLink>
                         </li>
                     </ul>
