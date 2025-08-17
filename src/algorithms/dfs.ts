@@ -23,8 +23,8 @@ export function* dfs(root: GraphNode, nodes: GraphNode[]): Generator<DFSAction, 
 
             const neighbors = [...current.neighbors].reverse();
             for (const neighborId of neighbors) {
-                if (!visited.has(neighborId)) {
-                    const neighbor = nodes.find(n => n.id === neighborId);
+                if (!visited.has(neighborId.to)) {
+                    const neighbor = nodes.find(n => n.id === neighborId.to);
                     if (neighbor) {
                         stack.push(neighbor);
                         yield { type: "push", node: neighbor };

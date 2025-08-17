@@ -32,7 +32,7 @@ function reducer(state: State, action: Action): State {
 }
 
 
-function useAlgorithm<I, A>(algorithm: (input: I) => Generator<A, void, unknown>, updateAllData: (data: any) => void, onStart: (data: I, historyRef: RefObject<Array<any>>) => void, onStep: (data: A, historyRef: RefObject<Array<any>>) => void) {
+function useAlgorithm<I, A>(algorithm: (input: I) => Generator<A, void, unknown>, updateAllData: (data: any) => void, onStart: (data: I, historyRef: RefObject<Array<any>>) => void, onStep: (data: A, historyRef: RefObject<Array<any>>) => void, waitTime: number = 1000) {
     const [intervalRef, cleanupInterval] = useAlgorithmInterval();
     const generatorRef = useRef<Generator<A, void, unknown> | undefined>(undefined);
     const historyRef = useRef<Array<any>>([]);
@@ -57,9 +57,11 @@ function useAlgorithm<I, A>(algorithm: (input: I) => Generator<A, void, unknown>
         currentStep.current = 0;
 
         onStart(input, historyRef);
+
+        runStep();
         intervalRef.current = setInterval(() => {
             runStep();
-        }, 1000);
+        }, waitTime);
     }
 
     function runStep() {
@@ -104,9 +106,10 @@ function useAlgorithm<I, A>(algorithm: (input: I) => Generator<A, void, unknown>
 
     function toggleAlgorithm() {
         if (state.isPaused) {
+            runStep();
             intervalRef.current = setInterval(() => {
                 runStep();
-            }, 1000);
+            }, waitTime);
         } else {
             cleanupInterval();
         }

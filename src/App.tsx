@@ -14,6 +14,7 @@ import Theory from "./components/Theory.tsx";
 import Home from "./components/Home.tsx";
 import {useState} from "react";
 import { TheoryContext } from './TheoryContext.ts';
+import Dijkstra from "./components/graphs/Dijkstra.tsx";
 
 function App() {
     const [theory, setTheory] = useState(null);
@@ -32,6 +33,7 @@ function App() {
                             <Route path="/quick-sort" element={<QuickSort/>}/>
                             <Route path="/bfs" element={<BFS/>}/>
                             <Route path="/dfs" element={<DFS/>}/>
+                            <Route path="/dijkstra" element={<Dijkstra/>}/>
                             <Route path="/bst-search" element={<BSTSearch/>}/>
                             <Route path="/bst-insert" element={<BSTInsert/>}/>
                             <Route path="/bst-delete" element={<BSTDelete/>}/>
