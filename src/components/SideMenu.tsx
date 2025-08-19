@@ -24,14 +24,14 @@ function SideMenu() {
                 <Menu className="w-8 h-8"></Menu>
             </button>
             <aside
-                className={`max-w-sm w-full h-full pt-8 px-8 border-r border-b dark-bg z-100 overflow-auto transition-all duration-300 border-neutral-700 2xl:sticky fixed ${isMenuOpen ? "left-0" : "-left-full"}`}>
+                className={`max-w-sm w-full h-full pt-4 px-8 border-r border-b dark-bg z-100 overflow-auto transition-all duration-300 border-neutral-700 2xl:sticky fixed ${isMenuOpen ? "left-0" : "-left-full"}`}>
                 <h2 className="font-bold text-3xl mb-10">Выбор алгоритма</h2>
                 <button onClick={() => setIsMenuOpen(false)}
                         className="cursor-pointer absolute top-4 right-4 2xl:hidden block">
                     <X className="w-8 h-8"></X>
                 </button>
                 <nav>
-                    <h3 className="font-semibold text-2xl mb-2">Сортировки</h3>
+                    <h3 className="font-semibold text-2xl mb-2">Sorting</h3>
                     <ul className="grid grid-cols-2 gap-4 mb-12">
                         <li>
                             <NavLink to="/bubble-sort" className={({isActive}) =>
@@ -66,34 +66,7 @@ function SideMenu() {
                             </NavLink>
                         </li>
                     </ul>
-                    <h3 className="font-semibold text-2xl mb-2">Графы</h3>
-                    <ul className="grid grid-cols-2 gap-4 mb-12">
-                        <li>
-                            <NavLink to="/dfs" className={({isActive}) =>
-                                (isActive ? "text-green-400" : "") + " flex flex-col items-center"
-                            }>
-                                <ArrowDown className="w-16 h-16"></ArrowDown>
-                                DFS
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink to="/bfs" className={({isActive}) =>
-                                (isActive ? "text-green-400" : "") + " flex flex-col items-center"
-                            }>
-                                <Move className="w-16 h-16"></Move>
-                                BFS
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink to="/dijkstra" className={({isActive}) =>
-                                (isActive ? "text-green-400" : "") + " flex flex-col items-center"
-                            }>
-                                <Route className="w-16 h-16"></Route>
-                                Dijkstra
-                            </NavLink>
-                        </li>
-                    </ul>
-                    <h3 className="font-semibold text-2xl mb-2">BST</h3>
+                    <h3 className="font-semibold text-2xl mb-2">Binary Search Tree</h3>
                     <ul className="grid grid-cols-2 gap-4 mb-12">
                         <li>
                             <NavLink to="/bst-search" className={({isActive}) =>
@@ -117,6 +90,33 @@ function SideMenu() {
                             }>
                                 <X className="w-16 h-16"></X>
                                 Remove
+                            </NavLink>
+                        </li>
+                    </ul>
+                    <h3 className="font-semibold text-2xl mb-2">Graph</h3>
+                    <ul className="grid grid-cols-2 gap-4 mb-12">
+                        <li>
+                            <NavLink to="/dfs" className={({isActive}) =>
+                                (isActive ? "text-green-400" : "") + " flex flex-col items-center"
+                            }>
+                                <ArrowDown className="w-16 h-16"></ArrowDown>
+                                DFS
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink to="/bfs" className={({isActive}) =>
+                                (isActive ? "text-green-400" : "") + " flex flex-col items-center"
+                            }>
+                                <Move className="w-16 h-16"></Move>
+                                BFS
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink to="/dijkstra" className={({isActive}) =>
+                                (isActive ? "text-green-400" : "") + " flex flex-col items-center"
+                            }>
+                                <Route className="w-16 h-16"></Route>
+                                Dijkstra
                             </NavLink>
                         </li>
                     </ul>

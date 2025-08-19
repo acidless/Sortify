@@ -2,6 +2,7 @@ import {useContext, useEffect, useReducer, useRef} from "react";
 import {insertionSort, type InsertionSortAction} from "../../algorithms/insertionSort.ts";
 import SortingAlgorithm from "./SortingAlgorithm.tsx";
 import {TheoryContext} from "../../TheoryContext.ts";
+import Tabs from "../Tabs.tsx";
 
 type State = {
     pivotIndex: number | undefined,
@@ -30,18 +31,29 @@ function reducer(state: State, action: Action): State {
 
 function InsertionSortTheory() {
     return <>
-        <h3 className="mb-6">📌 Сортировка вставками (Insertion Sort)</h3>
-
-        <h4 className="mb-2">💡 Идея алгоритма</h4>
+        <h3 className="mb-2">📌 Сортировка вставками (Insertion Sort)</h3>
         <p className="mb-6 text-base font-light leading-6">
             Сортировка вставками — это простой алгоритм сортировки, который строит отсортированный массив поэлементно.
-            Он проходит по массиву, беря один элемент за раз и вставляя его в правильную позицию в уже отсортированной
+            Он проходит по массиву, беря один элемент за раз и вставляя его в правильную позицию в <span
+            className="text-green-400">уже отсортированной </span>
             части массива.
             Алгоритм напоминает способ, которым люди сортируют карточки: беря одну карточку, они вставляют её в нужное
             место среди уже отсортированных карточек.
         </p>
 
-        <h4 className="mb-2">⏱ Сложность</h4>
+        <h4 className="mb-2 text-lg font-semibold">👍 Плюсы и 👎 Минусы</h4>
+        <ul className="list-disc list-inside text-base font-light leading-6">
+            <li>Простая и интуитивно понятная реализация.</li>
+            <li>Эффективна для почти отсортированных массивов (почти O(n)).</li>
+            <li className="text-red-400">Медленная на больших случайных массивах (O(n²)).</li>
+            <li className="text-red-400">Не подходит для больших наборов данных в реальных системах.</li>
+        </ul>
+    </>
+}
+
+function InsertionSortAsymptotics() {
+    return <>
+        <h3 className="mb-2">⏱ Сложность</h3>
         <table className="mb-2 text-base font-light leading-6 text-left border-collapse">
             <thead>
             <tr>
@@ -50,29 +62,33 @@ function InsertionSortTheory() {
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td className="border-neutral-700 border-1 p-2">Худший</td>
-                <td className="border-neutral-700 border-1 p-2">O(n²)</td>
+            <tr className="bg-green-900/40">
+                <td className="border-neutral-700 border-1 p-2">Лучший (отсортированный массив)</td>
+                <td className="border-neutral-700 border-1 p-2">O(n)</td>
             </tr>
-            <tr>
+            <tr className="bg-yellow-900/40">
                 <td className="border-neutral-700 border-1 p-2">Средний</td>
                 <td className="border-neutral-700 border-1 p-2">O(n²)</td>
             </tr>
-            <tr>
-                <td className="border-neutral-700 border-1 p-2">Лучший (отсортированный массив)</td>
-                <td className="border-neutral-700 border-1 p-2">O(n)</td>
+            <tr className="bg-red-900/40">
+                <td className="border-neutral-700 border-1 p-2">Худший</td>
+                <td className="border-neutral-700 border-1 p-2">O(n²)</td>
             </tr>
             </tbody>
         </table>
         <p className="mb-6 text-base font-light leading-6">Память: O(1)</p>
+    </>
+}
 
-        <h4 className="mb-2">🧠 Пошаговое объяснение</h4>
+function InsertionSortAlgorithm() {
+    return <>
+        <h3 className="mb-2">🧠 Пошаговое объяснение</h3>
         <ol className="list-decimal list-inside mb-6 text-base font-light leading-6">
-            <li>Начинаем с второго элемента массива (первый элемент считается отсортированным).</li>
-            <li>Сравниваем текущий элемент с предыдущими элементами в отсортированной части массива.</li>
-            <li>Сдвигаем все элементы, которые больше текущего, вправо, чтобы освободить место для вставки.</li>
-            <li>Вставляем текущий элемент на его правильную позицию в отсортированной части массива.</li>
-            <li>Повторяем процесс для всех оставшихся элементов в массиве.</li>
+            <li>2️⃣ Начинаем с второго элемента массива (первый элемент считается отсортированным).</li>
+            <li>🔎 Сравниваем текущий элемент с предыдущими элементами в отсортированной части массива.</li>
+            <li>➡️ Сдвигаем все элементы, которые больше текущего, вправо, чтобы освободить место для вставки.</li>
+            <li>⬇️ Вставляем текущий элемент на его правильную позицию в отсортированной части массива.</li>
+            <li>🔁 Повторяем процесс для всех оставшихся элементов в массиве.</li>
         </ol>
 
         <h4 className="mb-2">📄 Псевдокод</h4>
@@ -93,6 +109,14 @@ end procedure`}
     </>
 }
 
+function InsertionSortText() {
+    return <Tabs tabs={[{content: InsertionSortTheory(), name: "Теория"}, {
+        content: InsertionSortAsymptotics(),
+        name: "Сложность"
+    }, {content: InsertionSortAlgorithm(), name: "Шаги"}]}>
+    </Tabs>
+}
+
 function InsertionSort() {
     const {setTheory} = useContext(TheoryContext);
     const [state, dispatch] = useReducer(reducer, initialState);
@@ -103,7 +127,7 @@ function InsertionSort() {
     }, [state]);
 
     useEffect(() => {
-        setTheory(<InsertionSortTheory/>);
+        setTheory(<InsertionSortText/>);
     }, []);
 
 

@@ -1,21 +1,34 @@
 import {useContext, useEffect, useRef, useState} from "react";
 import {bubbleSort, type BubbleSortAction} from "../../algorithms/bubbleSort.ts";
 import SortingAlgorithm from "./SortingAlgorithm.tsx";
-import { TheoryContext } from "../../TheoryContext.ts";
+import {TheoryContext} from "../../TheoryContext.ts";
+import Tabs from "../Tabs.tsx";
 
 function BubbleSortTheory() {
     return <>
-        <h3 className="mb-6">📌 Сортировка пузырьком (Bubble Sort)</h3>
-
-        <h4 className="mb-2">💡 Идея алгоритма</h4>
+        <h3 className="mb-2">📌 Сортировка пузырьком (Bubble Sort)</h3>
         <p className="mb-6 text-base font-light leading-6">
             Пузырьковая сортировка — это простой алгоритм сортировки, который многократно проходит по списку,
-            сравнивает соседние элементы и меняет их местами, если они стоят в неправильном порядке.
-            На каждой итерации "всплывает" (перемещается в конец массива) самый большой из оставшихся элементов —
+            сравнивает <span className="text-green-400">соседние элементы</span> и меняет их местами, если они стоят в
+            неправильном порядке.
+            На каждой итерации <span className="text-green-400">"всплывает"</span> (перемещается в конец массива) самый
+            большой из оставшихся элементов —
             как пузырёк в воде.
         </p>
 
-        <h4 className="mb-2">⏱ Сложность</h4>
+        <h4 className="mb-2 text-lg font-semibold">👍 Плюсы и 👎 Минусы</h4>
+        <ul className="list-disc list-inside text-base font-light leading-6">
+            <li>Простая реализация (буквально несколько строк кода).</li>
+            <li>Хорошо подходит для обучения основам алгоритмов сортировки.</li>
+            <li className="text-red-400">Медленная на больших массивах (O(n²)).</li>
+            <li className="text-red-400">Редко применяется в реальных системах.</li>
+        </ul>
+    </>
+}
+
+function BubbleSortAsymptotics() {
+    return <>
+        <h3 className="mb-2">⏱ Сложность</h3>
         <table className="mb-2 text-base font-light leading-6 text-left border-collapse">
             <thead>
             <tr>
@@ -24,30 +37,34 @@ function BubbleSortTheory() {
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td className="border-neutral-700 border-1 p-2">Худший</td>
-                <td className="border-neutral-700 border-1 p-2">O(n²)</td>
+            <tr className="bg-green-900/40">
+                <td className="border-neutral-700 border-1 p-2">Лучший (отсортированный массив)</td>
+                <td className="border-neutral-700 border-1 p-2">O(n)</td>
             </tr>
-            <tr>
+            <tr className="bg-yellow-900/40">
                 <td className="border-neutral-700 border-1 p-2">Средний</td>
                 <td className="border-neutral-700 border-1 p-2">O(n²)</td>
             </tr>
-            <tr>
-                <td className="border-neutral-700 border-1 p-2">Лучший (отсортированный массив)</td>
-                <td className="border-neutral-700 border-1 p-2">O(n)</td>
+            <tr className="bg-red-900/40">
+                <td className="border-neutral-700 border-1 p-2">Худший</td>
+                <td className="border-neutral-700 border-1 p-2">O(n²)</td>
             </tr>
             </tbody>
         </table>
         <p className="mb-6 text-base font-light leading-6">Память: O(1)</p>
+    </>
+}
 
-        <h4 className="mb-2">🧠 Пошаговое объяснение</h4>
+function BubbleSortAlgorithm() {
+    return <>
+        <h3 className="mb-2">🧠 Пошаговое объяснение</h3>
         <ol className="list-decimal list-inside mb-6 text-base font-light leading-6">
-            <li>Проходим по массиву слева направо.</li>
-            <li>Сравниваем текущий элемент с следующим.</li>
-            <li>Если текущий элемент больше следующего — меняем их местами.</li>
-            <li>После прохода последний элемент гарантированно на своём месте.</li>
-            <li>Повторяем для оставшейся части массива (не включая уже отсортированные элементы в конце).</li>
-            <li>Если за проход не было обменов — массив уже отсортирован (оптимизация).</li>
+            <li>➡️ Проходим по массиву слева направо.</li>
+            <li>🔍 Сравниваем текущий элемент с следующим.</li>
+            <li>🔄 Если текущий элемент больше следующего — меняем их местами.</li>
+            <li>✅ После прохода последний элемент гарантированно на своём месте.</li>
+            <li>🔁 Повторяем для оставшейся части массива (не включая уже отсортированные элементы в конце).</li>
+            <li>⚠️ Если за проход не было обменов — массив уже отсортирован (оптимизация).</li>
         </ol>
 
         <h4 className="mb-2">📄 Псевдокод</h4>
@@ -69,13 +86,21 @@ end procedure`}
     </>
 }
 
+function BubbleSortText() {
+    return <Tabs tabs={[{content: BubbleSortTheory(), name: "Теория"}, {
+        content: BubbleSortAsymptotics(),
+        name: "Сложность"
+    }, {content: BubbleSortAlgorithm(), name: "Шаги"}]}>
+    </Tabs>
+}
+
 function BubbleSort() {
     const {setTheory} = useContext(TheoryContext);
     const [checkingIndices, setCheckingIndices] = useState<number[] | undefined>();
     const checkingIndicesRef = useRef<number[] | undefined>(checkingIndices);
 
     useEffect(() => {
-        setTheory(<BubbleSortTheory/>);
+        setTheory(<BubbleSortText/>);
     }, [checkingIndices]);
 
     function makeSnapshot() {

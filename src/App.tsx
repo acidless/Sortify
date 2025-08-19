@@ -14,6 +14,7 @@ import Home from "./components/Home.tsx";
 import {useState} from "react";
 import { TheoryContext } from './TheoryContext.ts';
 import Dijkstra from "./components/graphs/Dijkstra.tsx";
+import Theory from "./components/Theory.tsx";
 
 function App() {
     const [theory, setTheory] = useState(null);
@@ -37,6 +38,7 @@ function App() {
                             <Route path="/bst-insert" element={<BSTInsert/>}/>
                             <Route path="/bst-delete" element={<BSTDelete/>}/>
                         </Routes>
+                        <Theory></Theory>
                     </main>
                 </BrowserRouter>
             </TheoryContext.Provider>
