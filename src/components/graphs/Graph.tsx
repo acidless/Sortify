@@ -75,14 +75,12 @@ function Graph({
             setCanvasSize({ w: canvasW, h: canvasH });
         };
 
-        // Первый просчёт и подписка на ресайз
         layout();
         const ro = new ResizeObserver(layout);
         ro.observe(el);
         return () => ro.disconnect();
     }, [nodes]);
 
-    // Смещение конца линии к границе ноды, чтобы стрелка не пряталась под нодой
     function offsetPoint(x1: number, y1: number, x2: number, y2: number, r: number) {
         const dx = x2 - x1;
         const dy = y2 - y1;
@@ -103,11 +101,8 @@ function Graph({
     }
 
     return (
-        // ВНЕШНИЙ КОНТЕЙНЕР: прокрутка, чтобы и SVG, и HTML-ноды прокручивались вместе
-        <div ref={wrapperRef} className="relative w-full h-full flex-1 overflow-auto">
-            {/* ВНУТРЕННИЙ ХОЛСТ фиксированного размера: в нём абсолюты и SVG совпадают по системе координат */}
+        <div ref={wrapperRef} className="relative w-full h-full flex-1 overflow-auto md:overflow-hidden">
             <div className="relative" style={{ width: `${canvasSize.w}px`, height: `${canvasSize.h}px` }}>
-                {/* Рёбра (SVG) */}
                 <svg className="absolute inset-0 pointer-events-none" width={canvasSize.w} height={canvasSize.h}>
                     <defs>
                         <marker
@@ -119,7 +114,7 @@ function Graph({
                             markerHeight="6"
                             orient="auto"
                         >
-                            <path d="M 0 0 L 10 5 L 0 10 z" fill="white" />
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#aeaeae"/>
                         </marker>
                     </defs>
 
@@ -131,8 +126,8 @@ function Graph({
 
                         const { x: endX, y: endY } = offsetPoint(x1, y1, x2, y2, NODE_R);
 
-                        const midX = (x1 + endX) / 2;
-                        const midY = (y1 + endY) / 2;
+                        const midX = (x1 + x2) / 2;
+                        const midY = (y1 + y2) / 2;
 
                         return (
                             <g key={i}>
@@ -141,7 +136,7 @@ function Graph({
                                     y1={y1}
                                     x2={endX}
                                     y2={endY}
-                                    stroke="white"
+                                    stroke="#aeaeae"
                                     strokeWidth="2"
                                     markerEnd={directed ? "url(#arrow)" : undefined}
                                 />
@@ -167,7 +162,6 @@ function Graph({
                     })}
                 </svg>
 
-                {/* Ноды (HTML), те же координаты, что и у SVG */}
                 {nodes.map((node) => (
                     <BSTNode
                         key={node.id}
