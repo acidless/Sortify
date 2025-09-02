@@ -1,16 +1,20 @@
 import {type RefObject} from "react";
-import type {GraphNode} from "../../types.ts";
+import type {GraphNode, GraphTraversalAction} from "../../types.ts";
 import PopupText from "../PopupText.tsx";
 import Graph from "./Graph.tsx";
 import EndAlgorithm from "../EndAlgorithm.tsx";
 import Controls from "../Controls.tsx";
-import {type GraphTraversalAction, type GraphTraversalState, useGraphTraversal} from "../../hooks/useGraphTraversal.ts";
+import {
+    type GraphHistoryState,
+    type TraversalAction,
+    useGraphTraversal
+} from "../../hooks/useGraphTraversal.ts";
 import {Dices, Play} from "lucide-react";
 import {generateRandomGraph} from "../../algorithms/graphUtils.ts";
 
 type Props = {
-    algorithm: (root: GraphNode, graph: GraphNode[]) => Generator<any, void, unknown>;
-    setAlgorithmState: (state: any, dispatch: React.Dispatch<GraphTraversalAction>, stateRef: RefObject<GraphTraversalState>) => void;
+    algorithm: (root: GraphNode<number>, graph: GraphNode<number>[]) => Generator<GraphTraversalAction, void, unknown>;
+    setAlgorithmState: (state: GraphTraversalAction, dispatch: React.Dispatch<TraversalAction>, stateRef: RefObject<GraphHistoryState>) => void;
     title: string;
 }
 

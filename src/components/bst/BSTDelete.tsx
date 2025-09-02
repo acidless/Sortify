@@ -1,6 +1,6 @@
 import {type RefObject, useContext, useEffect} from "react";
 import {bstBfs, generateRandomBST} from "../../algorithms/bstUtils.ts";
-import {bstDelete} from "../../algorithms/bstDelete.ts";
+import {bstDelete, type BSTDeleteAction} from "../../algorithms/bstDelete.ts";
 import BSTAlgorithm from "./BSTAlgorithm.tsx";
 import type {BSTOperationAction, BSTOperationState} from "../../hooks/useBSTOperation.ts";
 import {TheoryContext} from "../../TheoryContext.ts";
@@ -140,7 +140,7 @@ function BSTDelete() {
         setTheory(<BSTDeleteText/>);
     }, []);
 
-    function setAlgorithmState(value: any, dispatch: React.Dispatch<BSTOperationAction>, stateRef: RefObject<BSTOperationState>, makeComparison: (a: number, b: number) => string) {
+    function setAlgorithmState(value: BSTDeleteAction, dispatch: React.Dispatch<BSTOperationAction>, stateRef: RefObject<BSTOperationState>, makeComparison: (a: number, b: number) => string) {
         switch (value.type) {
             case "compare":
                 dispatch({

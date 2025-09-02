@@ -20,9 +20,15 @@ const ArrayInput = ({onInputChange, onSubmit}: Props) => {
             }
 
             return arr.map((x: number, idx: number) => ({value: x, key: idx}));
-        } catch (e: any) {
-            setValidationError(e.message);
-            console.error(e);
+        } catch (e: unknown) {
+            if (e instanceof Error) {
+                setValidationError(e.message);
+                console.error(e);
+            } else {
+                setValidationError("Неизвестная ошибка");
+                console.error(e);
+            }
+            
             return [];
         }
     }

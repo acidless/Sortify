@@ -1,13 +1,13 @@
 import type {GraphNode} from "../types.ts";
 
 export type BFSAction =
-    | { type: "visit"; node: GraphNode }
-    | { type: "enqueue"; node: GraphNode }
+    | { type: "visit"; node: GraphNode<number> }
+    | { type: "enqueue"; node: GraphNode<number> }
     | { type: "done" };
 
-export function* bfs(root: GraphNode, nodes: GraphNode[]): Generator<BFSAction, void, unknown> {
+export function* bfs(root: GraphNode<number>, nodes: GraphNode<number>[]): Generator<BFSAction, void, unknown> {
     const visited = new Set<string>();
-    const queue: GraphNode[] = [];
+    const queue: GraphNode<number>[] = [];
 
     queue.push(root);
     visited.add(root.id);

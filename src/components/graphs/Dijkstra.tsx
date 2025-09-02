@@ -1,25 +1,25 @@
 import Graph from "./Graph.tsx";
 import type {GraphNode} from "../../types.ts";
 import {useReducer, useRef, useCallback, useEffect, type RefObject, useContext} from "react";
-import useAlgorithm from "../../hooks/useAlgorithm.ts";
+import useAlgorithm, {type BaseAlgorithmState} from "../../hooks/useAlgorithm.ts";
 import Controls from "../Controls.tsx";
 import PopupText from "../PopupText.tsx";
 import EndAlgorithm from "../EndAlgorithm.tsx";
-import {dijkstra} from "../../algorithms/dijkstra.ts";
+import {dijkstra, type DijkstraAction} from "../../algorithms/dijkstra.ts";
 import {generateRandomGraph} from "../../algorithms/graphUtils.ts";
 import {Dices, Play} from "lucide-react";
 import {TheoryContext} from "../../TheoryContext.ts";
 import Tabs from "../Tabs.tsx";
 
 type State = {
-    graph: GraphNode[];
+    graph: GraphNode<number>[];
     visitedNodes: Set<string>;
     distances: Map<string, number>;
     popupText: string;
 };
 
 type Action =
-    | { type: "SET_GRAPH"; payload: GraphNode[] }
+    | { type: "SET_GRAPH"; payload: GraphNode<number>[] }
     | { type: "SET_VISITED_NODES"; payload: Set<string> }
     | { type: "SET_DISTANCES"; payload: Map<string, number> }
     | { type: "SET_POPUP_TEXT"; payload: string };
@@ -45,6 +45,8 @@ function reducer(state: State, action: Action): State {
             return state;
     }
 }
+
+type DjikstraHistoryState = Omit<State, "graph"> & Partial<BaseAlgorithmState>;
 
 function DijkstraTheory() {
     return <>
@@ -183,7 +185,7 @@ function Dijkstra() {
         return dijkstra(stateRef.current.graph[0], stateRef.current.graph);
     }, []);
 
-    const onStart = useCallback((_input: GraphNode, historyRef: RefObject<Array<any>>) => {
+    const onStart = useCallback((_input: GraphNode<number>, historyRef: RefObject<Array<DjikstraHistoryState>>) => {
         historyRef.current.push({
             visitedNodes: new Set(),
             distances: new Map(stateRef.current.distances),
@@ -191,13 +193,13 @@ function Dijkstra() {
         });
     }, []);
 
-    const updateAll = useCallback((next: any) => {
+    const updateAll = useCallback((next: DjikstraHistoryState) => {
         dispatch({type: "SET_VISITED_NODES", payload: new Set(next.visitedNodes)});
         dispatch({type: "SET_DISTANCES", payload: new Map(next.distances)});
         dispatch({type: "SET_POPUP_TEXT", payload: next.popupText});
     }, []);
 
-    const onStep = useCallback((value: any, historyRef: RefObject<Array<any>>) => {
+    const onStep = useCallback((value: DijkstraAction, historyRef: RefObject<Array<DjikstraHistoryState>>) => {
         setAlgorithmStateWrapper(value);
 
         historyRef.current.push({
@@ -207,7 +209,7 @@ function Dijkstra() {
         });
     }, []);
 
-    function setAlgorithmStateWrapper(value: any) {
+    function setAlgorithmStateWrapper(value: DijkstraAction) {
         switch (value.type) {
             case "visit": {
                 const visitedNodes = new Set(stateRef.current.visitedNodes);

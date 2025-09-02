@@ -3,14 +3,14 @@ import PopupText from "../PopupText.tsx";
 import BinarySearchTree from "./BinarySearchTree.tsx";
 import EndAlgorithm from "../EndAlgorithm.tsx";
 import Controls from "../Controls.tsx";
-import {type BSTOperationAction, type BSTOperationState, useBSTOperation} from "../../hooks/useBSTOperation.ts";
-import type {BSTNode} from "../../types.ts";
+import {type BSTHistoryState, type BSTOperationAction, useBSTOperation} from "../../hooks/useBSTOperation.ts";
+import type {BSTAction, BSTNode} from "../../types.ts";
 import {type RefObject, useState} from "react";
 
 type Props = {
-    algo: (input: BSTNode, target: number) => Generator<any, void, unknown>,
-    setAlgorithmState: (state: any, dispatch: React.Dispatch<BSTOperationAction>, stateRef: RefObject<BSTOperationState>, makeComparison: (a: number, b: number) => string) => void,
-    startBST: BSTNode[],
+    algo: (input: BSTNode<number>, target: number) => Generator<BSTAction, void, unknown>,
+    setAlgorithmState: (state: BSTAction, dispatch: React.Dispatch<BSTOperationAction>, stateRef: RefObject<BSTHistoryState>, makeComparison: (a: number, b: number) => string) => void,
+    startBST: BSTNode<number>[],
     title: string
 }
 

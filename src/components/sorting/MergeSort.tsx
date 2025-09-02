@@ -161,16 +161,17 @@ function MergeSort() {
     function makeSnapshot() {
         return {
             checkingIndices: stateRef.current.checkingIndices,
+            overwriteIndex: stateRef.current.overwriteIndex,
             leftPart: stateRef.current.leftPart,
             rightPart: stateRef.current.rightPart
         };
     }
 
-    function updateData(next: any) {
+    function updateData(next: State) {
         dispatch({type: "SET_LEFT_PART", payload: next.leftPart});
         dispatch({type: "SET_RIGHT_PART", payload: next.rightPart});
-        dispatch({type: "SET_CHECKING_INDICES", payload: next.indices});
-        dispatch({type: "SET_OVERWRITE_INDEX", payload: next.index});
+        dispatch({type: "SET_CHECKING_INDICES", payload: next.checkingIndices});
+        dispatch({type: "SET_OVERWRITE_INDEX", payload: next.overwriteIndex});
     }
 
     function setAlgorithmState(action: MergeSortAction) {

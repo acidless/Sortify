@@ -10,7 +10,7 @@ import EndAlgorithm from "../EndAlgorithm.tsx";
 type Props = {
     name: string;
     algorithm: any;
-    makeSnapshot: () => any;
+    makeSnapshot: () => void;
     updateData: (next: any) => void;
     setAlgorithmState: (value: any) => void;
     checkingIndices?: number[];

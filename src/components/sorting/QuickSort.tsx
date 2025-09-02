@@ -168,10 +168,10 @@ function QuickSort() {
         };
     }
 
-    function updateData(next: any) {
+    function updateData(next: State) {
         dispatch({type: "SET_LEFT", payload: next.leftPart});
         dispatch({type: "SET_RIGHT", payload: next.rightPart});
-        dispatch({type: "SET_CHECKING", payload: next.indices});
+        dispatch({type: "SET_CHECKING", payload: next.checkingIndices});
         dispatch({type: "SET_PIVOT", payload: next.pivotIndex});
         dispatch({type: "SET_SWAP", payload: next.swapIndices});
     }

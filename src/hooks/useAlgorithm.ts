@@ -1,24 +1,24 @@
 import {type RefObject, useEffect, useReducer, useRef} from "react";
 import useAlgorithmInterval from "./useAlgorithmInterval.ts";
 
-type State = {
-    isDone: boolean;
+export type BaseAlgorithmState = {
+    isDone?: boolean;
     isPaused: boolean;
     firstState: boolean;
 }
 
 type Action =
-    | { type: "SET_DONE"; payload: boolean }
+    | { type: "SET_DONE"; payload: boolean | undefined }
     | { type: "SET_PAUSED"; payload: boolean }
     | { type: "SET_FIRST_STATE"; payload: boolean };
 
-const initialState: State = {
+const initialState: BaseAlgorithmState = {
     isDone: false,
     isPaused: false,
     firstState: true
 };
 
-function reducer(state: State, action: Action): State {
+function reducer(state: BaseAlgorithmState, action: Action): BaseAlgorithmState {
     switch (action.type) {
         case "SET_DONE":
             return {...state, isDone: action.payload};
@@ -32,14 +32,14 @@ function reducer(state: State, action: Action): State {
 }
 
 
-function useAlgorithm<I, A>(algorithm: (input: I) => Generator<A, void, unknown>, updateAllData: (data: any) => void, onStart: (data: I, historyRef: RefObject<Array<any>>) => void, onStep: (data: A, historyRef: RefObject<Array<any>>) => void, waitTime: number = 1000) {
+function useAlgorithm<I, A, H extends Partial<BaseAlgorithmState>>(algorithm: (input: I) => Generator<A, void, unknown>, updateAllData: (data: H) => void, onStart: (data: I, historyRef: RefObject<Array<H>>) => void, onStep: (data: A, historyRef: RefObject<Array<H>>) => void, waitTime: number = 1000) {
     const [intervalRef, cleanupInterval] = useAlgorithmInterval();
     const generatorRef = useRef<Generator<A, void, unknown> | undefined>(undefined);
-    const historyRef = useRef<Array<any>>([]);
+    const historyRef = useRef<Array<H>>([]);
     const currentStep = useRef(0);
 
     const [state, dispatch] = useReducer(reducer, initialState);
-    const stateRef = useRef<State>(state);
+    const stateRef = useRef<BaseAlgorithmState>(state);
 
     useEffect(() => {
         stateRef.current = state;

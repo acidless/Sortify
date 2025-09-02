@@ -7,7 +7,7 @@ type Props = {
     onOperation: (value: number) => void;
     onOperationChange: (value: number) => void;
     operationLabel: string;
-    setBST: (bst: BSTNode[]) => void
+    setBST: (bst: BSTNode<number>[]) => void
 }
 
 const BSTInput = ({operationLabel, onOperation, onOperationChange, setBST}: Props) => {
