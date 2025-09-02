@@ -1,5 +1,5 @@
-import {type GraphTraversalAction, type GraphTraversalState} from "../../hooks/useGraphTraversal.ts";
-import {bfs} from "../../algorithms/bfs.ts";
+import {type GraphTraversalState, type TraversalAction} from "../../hooks/useGraphTraversal.ts";
+import {bfs, type BFSAction} from "../../algorithms/bfs.ts";
 import GraphTraversal from "./GraphTraversal.tsx";
 import {useContext, useEffect} from "react";
 import {TheoryContext} from "../../TheoryContext.ts";
@@ -106,7 +106,7 @@ function BFS() {
         setTheory(<BFSText/>);
     }, []);
 
-    function setAlgorithmState(value: any, dispatch: React.Dispatch<GraphTraversalAction>, stateRef: React.RefObject<GraphTraversalState>) {
+    function setAlgorithmState(value: BFSAction, dispatch: React.Dispatch<TraversalAction>, stateRef: React.RefObject<GraphTraversalState>) {
         switch (value.type) {
             case "enqueue":
                 dispatch({

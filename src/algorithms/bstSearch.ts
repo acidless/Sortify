@@ -1,13 +1,13 @@
 import type {BSTNode} from "../types.ts";
 
 export type BSTSearchAction =
-    | { type: "compare"; node: BSTNode }
-    | { type: "go-left"; node: BSTNode }
-    | { type: "go-right"; node: BSTNode }
-    | { type: "found"; node: BSTNode }
-    | { type: "not-found"; node: BSTNode | null };
+    | { type: "compare"; node: BSTNode<number> }
+    | { type: "go-left"; node: BSTNode<number> }
+    | { type: "go-right"; node: BSTNode<number> }
+    | { type: "found"; node: BSTNode<number> }
+    | { type: "not-found"; node: BSTNode<number> | null };
 
-export function* bstSearch(root: BSTNode | null, value: number): Generator<BSTSearchAction, void, unknown> {
+export function* bstSearch(root: BSTNode<number> | null, value: number): Generator<BSTSearchAction, void, unknown> {
     let current = root;
 
     while (current !== null) {

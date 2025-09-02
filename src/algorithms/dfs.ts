@@ -1,14 +1,14 @@
 import type { GraphNode } from "../types.ts";
 
 export type DFSAction =
-    | { type: "visit"; node: GraphNode }
-    | { type: "push"; node: GraphNode }
-    | { type: "pop"; node: GraphNode }
+    | { type: "visit"; node: GraphNode<number> }
+    | { type: "push"; node: GraphNode<number> }
+    | { type: "pop"; node: GraphNode<number> }
     | { type: "done" };
 
-export function* dfs(root: GraphNode, nodes: GraphNode[]): Generator<DFSAction, void, unknown> {
+export function* dfs(root: GraphNode<number>, nodes: GraphNode<number>[]): Generator<DFSAction, void, unknown> {
     const visited = new Set<string>();
-    const stack: GraphNode[] = [];
+    const stack: GraphNode<number>[] = [];
 
     stack.push(root);
     yield { type: "push", node: root };

@@ -1,13 +1,13 @@
-import type {BSTNode} from "../types.ts";
+import type {BSTAction, BSTNode} from "../types.ts";
 import {type RefObject, useCallback, useEffect, useReducer, useRef} from "react";
-import useAlgorithm from "./useAlgorithm.ts";
+import useAlgorithm, {type BaseAlgorithmState} from "./useAlgorithm.ts";
 
-export type BSTOperationState = {
-    checkingNode: BSTNode | null;
-    resultNode: BSTNode | null;
+export type BSTOperationState = Partial<BaseAlgorithmState> & {
+    checkingNode: BSTNode<number> | null;
+    resultNode: BSTNode<number> | null;
     popupText: string;
     targetNumber: number;
-    bstNodes: BSTNode[];
+    bstNodes: BSTNode<number>[];
 };
 
 const initialState: BSTOperationState = {
@@ -18,11 +18,11 @@ const initialState: BSTOperationState = {
     bstNodes: [],
 }
 
-export type BSTOperationAction = { type: "SET_CHECKING_NODE", payload: BSTNode | null } |
-    { type: "SET_RESULT_NODE", payload: BSTNode | null } |
+export type BSTOperationAction = { type: "SET_CHECKING_NODE", payload: BSTNode<number> | null } |
+    { type: "SET_RESULT_NODE", payload: BSTNode<number> | null } |
     { type: "SET_POPUP_TEXT", payload: string } |
     { type: "SET_TARGET_NUMBER", payload: number } |
-    { type: "SET_BST_NODES", payload: BSTNode[] };
+    { type: "SET_BST_NODES", payload: BSTNode<number>[] };
 
 function reducer(state: BSTOperationState, action: BSTOperationAction): BSTOperationState {
     switch (action.type) {
@@ -41,9 +41,11 @@ function reducer(state: BSTOperationState, action: BSTOperationAction): BSTOpera
     }
 }
 
-export function useBSTOperation(algo: (input: BSTNode, target: number) => Generator<any, void, unknown>,
-                         setAlgorithmState: (state: any, dispatch: React.Dispatch<BSTOperationAction>, stateRef: RefObject<BSTOperationState>, makeComparison: (a: number, b: number) => string) => void,
-                         startBST: BSTNode[]) {
+export type BSTHistoryState = Omit<BSTOperationState, "targetNumber" | "bstNodes">;
+
+export function useBSTOperation(algo: (input: BSTNode<number>, target: number) => Generator<BSTAction, void, unknown>,
+                                setAlgorithmState: (state: BSTAction, dispatch: React.Dispatch<BSTOperationAction>, stateRef: RefObject<BSTOperationState>, makeComparison: (a: number, b: number) => string) => void,
+                                startBST: BSTNode<number>[]) {
     const [state, dispatch] = useReducer(reducer, initialState);
     const stateRef = useRef<BSTOperationState>(state);
 
@@ -56,7 +58,7 @@ export function useBSTOperation(algo: (input: BSTNode, target: number) => Genera
         dispatch({type: "SET_BST_NODES", payload: startBST});
     }, [startBST]);
 
-    const algorithm = useCallback((input: BSTNode) => {
+    const algorithm = useCallback((input: BSTNode<number>) => {
         return algo(input, state.targetNumber);
     }, [state.targetNumber]);
 
@@ -66,7 +68,7 @@ export function useBSTOperation(algo: (input: BSTNode, target: number) => Genera
         return `${a} = ${b}`;
     }
 
-    const onStart = useCallback((_input: BSTNode, historyRef: RefObject<Array<any>>) => {
+    const onStart = useCallback((_input: BSTNode<number>, historyRef: RefObject<Array<BSTHistoryState>>) => {
         historyRef.current = [{
             checkingNode: null,
             resultNode: null,
@@ -75,24 +77,24 @@ export function useBSTOperation(algo: (input: BSTNode, target: number) => Genera
         }];
     }, []);
 
-    const updateAll = useCallback((next: any) => {
-        dispatch({type: "SET_CHECKING_NODE", payload: next.resultNode});
-        dispatch({type: "SET_RESULT_NODE", payload: next.foundNode});
+    const updateAll = useCallback((next: BSTOperationState) => {
+        dispatch({type: "SET_CHECKING_NODE", payload: next.checkingNode});
+        dispatch({type: "SET_RESULT_NODE", payload: next.resultNode});
         dispatch({type: "SET_POPUP_TEXT", payload: next.popupText});
     }, []);
 
-    const onStep = useCallback((value: any, historyRef: RefObject<Array<any>>) => {
+    const onStep = useCallback((value: BSTAction, historyRef: RefObject<Array<BSTHistoryState>>) => {
         setAlgorithmStateWrapper(value);
 
         historyRef.current.push({
             checkingNode: stateRef.current.checkingNode,
-            foundNode: stateRef.current.resultNode,
+            resultNode: stateRef.current.resultNode,
             isDone: algorithmData.algorithmStateRef.current.isDone,
             popupText: stateRef.current.popupText
         });
     }, [state.targetNumber]);
 
-    function setAlgorithmStateWrapper(value: any) {
+    function setAlgorithmStateWrapper(value: BSTAction) {
         if (value.type === "not-found" || value.type === "found") {
             algorithmData.cleanupInterval();
             algorithmData.algorithmDispatch({type: "SET_DONE", payload: true});
@@ -116,7 +118,7 @@ export function useBSTOperation(algo: (input: BSTNode, target: number) => Genera
         algorithmData.startAlgorithm(state.bstNodes[0]);
     }
 
-    const algorithmData = useAlgorithm(algorithm, updateAll, onStart, onStep);
+    const algorithmData = useAlgorithm<BSTNode<number>, BSTAction, BSTOperationState>(algorithm, updateAll, onStart, onStep);
 
 
     return {onOperation, onOperationChange, nodeStateFunc, useAlgorithmData: algorithmData, state};

@@ -3,7 +3,7 @@ import BSTNode from "../bst/BSTNode.tsx";
 import type { GraphNode } from "../../types.ts";
 
 type GraphProps = {
-    nodes: GraphNode[];
+    nodes: GraphNode<number>[];
     distances?: Map<string, number>;
     nodeStateFunc: (id: string) => string;
     weighted?: boolean;
@@ -90,7 +90,7 @@ function Graph({
         return { x: x1 + dx * ratio, y: y1 + dy * ratio };
     }
 
-    function makeNodeValue(node: GraphNode) {
+    function makeNodeValue(node: GraphNode<number>) {
         let value = String(node.value);
         if (distances.has(node.id)) {
             let d = String(distances.get(node.id));

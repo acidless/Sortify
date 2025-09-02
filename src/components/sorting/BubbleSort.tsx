@@ -114,7 +114,7 @@ function BubbleSort() {
         checkingIndicesRef.current = newCheckingIndices;
     }
 
-    function updateData(next: any) {
+    function updateData(next: {checkingIndices: number[]}) {
         updateCheckingIndices(next.checkingIndices);
     }
 

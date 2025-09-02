@@ -1,6 +1,9 @@
-import {type GraphTraversalAction, type GraphTraversalState} from "../../hooks/useGraphTraversal.ts";
+import {
+    type GraphTraversalState,
+    type TraversalAction
+} from "../../hooks/useGraphTraversal.ts";
 import GraphTraversal from "./GraphTraversal.tsx";
-import {dfs} from "../../algorithms/dfs.ts";
+import {dfs, type DFSAction} from "../../algorithms/dfs.ts";
 import {useContext, useEffect} from "react";
 import {TheoryContext} from "../../TheoryContext.ts";
 import Tabs from "../Tabs.tsx";
@@ -103,7 +106,7 @@ function DFS() {
         setTheory(<DFSText/>);
     }, []);
 
-    function setAlgorithmState(value: any, dispatch: React.Dispatch<GraphTraversalAction>, stateRef: React.RefObject<GraphTraversalState>) {
+    function setAlgorithmState(value: DFSAction, dispatch: React.Dispatch<TraversalAction>, stateRef: React.RefObject<GraphTraversalState>) {
         switch (value.type) {
             case "push":
                 dispatch({

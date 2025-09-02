@@ -3,13 +3,13 @@ import {useEffect, useLayoutEffect, useRef, useState} from "react";
 import BSTNode from "./BSTNode.tsx";
 
 type Props = {
-    root: NodeType | null;
+    root: NodeType<number> | null;
     nodeStateFunc: (id: string) => string;
     size: number;
 };
 
 const BinarySearchTree = ({ root, nodeStateFunc, size }: Props) =>  {
-    const [nodes, setNodes] = useState<PositionedNode[]>([]);
+    const [nodes, setNodes] = useState<PositionedNode<number>[]>([]);
     const [lines, setLines] = useState<Array<{ from: string; to: string }>>([]);
     const [absoluteLines, setAbsoluteLines] = useState<
         Array<{ x1: number; y1: number; x2: number; y2: number }>
@@ -26,11 +26,11 @@ const BinarySearchTree = ({ root, nodeStateFunc, size }: Props) =>  {
 
 
     function updateBST() {
-        const positions: PositionedNode[] = [];
+        const positions: PositionedNode<number>[] = [];
         const edges: Array<{ from: string; to: string }> = [];
         let mostDeepPosY = 0;
 
-        function traverse(node: NodeType | null, x: number, y: number, depth: number, baseSpacing: number) {
+        function traverse(node: NodeType<number> | null, x: number, y: number, depth: number, baseSpacing: number) {
             if (!node) return;
 
             if (y > mostDeepPosY) {

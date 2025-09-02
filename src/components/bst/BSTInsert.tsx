@@ -1,7 +1,7 @@
 import BSTAlgorithm from "./BSTAlgorithm.tsx";
 import type {BSTOperationAction, BSTOperationState} from "../../hooks/useBSTOperation.ts";
 import {type RefObject, useContext, useEffect} from "react";
-import {bstInsert} from "../../algorithms/bstInsert.ts";
+import {bstInsert, type BSTInsertAction} from "../../algorithms/bstInsert.ts";
 import {TheoryContext} from "../../TheoryContext.ts";
 import Tabs from "../Tabs.tsx";
 
@@ -107,7 +107,7 @@ function BSTInsert() {
         setTheory(<BSTInsertText/>);
     }, []);
 
-    function setAlgorithmState(value: any, dispatch: React.Dispatch<BSTOperationAction>, stateRef: RefObject<BSTOperationState>, makeComparison: (a: number, b: number) => string) {
+    function setAlgorithmState(value: BSTInsertAction, dispatch: React.Dispatch<BSTOperationAction>, stateRef: RefObject<BSTOperationState>, makeComparison: (a: number, b: number) => string) {
         switch (value.type) {
             case "compare":
                 dispatch({
@@ -127,7 +127,7 @@ function BSTInsert() {
                 dispatch({type: "SET_POPUP_TEXT", payload: `Элемент вставлен!`});
                 dispatch({type: "SET_RESULT_NODE", payload: value.node});
                 dispatch({type: "SET_CHECKING_NODE", payload: null});
-                dispatch({type: "SET_BST_NODES", payload: [...stateRef.current.bstNodes, value.node]});
+                dispatch({type: "SET_BST_NODES", payload: [...stateRef.current.bstNodes, value.node!]});
                 break;
         }
     }

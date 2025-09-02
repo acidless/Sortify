@@ -1,7 +1,7 @@
 import type {GraphNode} from "../types.ts";
 
-export function generateRandomGraph(nodeCount: number, edgeProbability: number = 0.3, directed = false): GraphNode[] {
-    const nodes: GraphNode[] = [];
+export function generateRandomGraph(nodeCount: number, edgeProbability: number = 0.3, directed = false): GraphNode<number>[] {
+    const nodes: GraphNode<number>[] = [];
 
     for (let i = 0; i < nodeCount; i++) {
         nodes.push({

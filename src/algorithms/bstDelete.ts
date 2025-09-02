@@ -1,17 +1,17 @@
 import type {BSTNode} from "../types.ts";
 
 export type BSTDeleteAction =
-    | { type: "compare"; node: BSTNode }
-    | { type: "not-found"; node: BSTNode | null }
-    | { type: "go-left"; node: BSTNode }
-    | { type: "go-right"; node: BSTNode }
-    | { type: "delete-leaf"; node: BSTNode }
-    | { type: "delete-single-child"; node: BSTNode }
-    | { type: "replace-with-successor"; node: BSTNode; successor: BSTNode }
-    | { type: "found"; node: BSTNode | null };
+    | { type: "compare"; node: BSTNode<number> }
+    | { type: "not-found"; node: BSTNode<number> | null }
+    | { type: "go-left"; node: BSTNode<number> }
+    | { type: "go-right"; node: BSTNode<number> }
+    | { type: "delete-leaf"; node: BSTNode<number> }
+    | { type: "delete-single-child"; node: BSTNode<number> }
+    | { type: "replace-with-successor"; node: BSTNode<number>; successor: BSTNode<number> }
+    | { type: "found"; node: BSTNode<number> | null };
 
-export function* bstDelete(root: BSTNode | null, value: number): Generator<BSTDeleteAction, void, unknown> {
-    function* deleteRec(node: BSTNode | null): Generator<BSTDeleteAction, BSTNode | null, unknown> {
+export function* bstDelete(root: BSTNode<number> | null, value: number): Generator<BSTDeleteAction, void, unknown> {
+    function* deleteRec(node: BSTNode<number> | null): Generator<BSTDeleteAction, BSTNode<number> | null, unknown> {
         if (!node) {
             yield {type: "not-found", node: null};
             return null;

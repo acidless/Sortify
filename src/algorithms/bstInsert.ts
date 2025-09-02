@@ -1,13 +1,13 @@
 import type {BSTNode} from "../types.ts";
 
 export type BSTInsertAction =
-    | { type: "compare"; node: BSTNode }
-    | { type: "exists"; node: BSTNode }
-    | { type: "go-left"; node: BSTNode }
-    | { type: "go-right"; node: BSTNode }
-    | { type: "inserted"; node: BSTNode | null };
+    | { type: "compare"; node: BSTNode<number> }
+    | { type: "exists"; node: BSTNode<number> }
+    | { type: "go-left"; node: BSTNode<number> }
+    | { type: "go-right"; node: BSTNode<number> }
+    | { type: "inserted"; node: BSTNode<number> | null };
 
-export function* bstInsert(root: BSTNode | null, value: number): Generator<BSTInsertAction, void, unknown> {
+export function* bstInsert(root: BSTNode<number> | null, value: number): Generator<BSTInsertAction, void, unknown> {
     let current = root;
     const node = {value, id: crypto.randomUUID(), left: null, right: null};
 

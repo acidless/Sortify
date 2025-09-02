@@ -138,7 +138,7 @@ function InsertionSort() {
         };
     }
 
-    function updateData(next: any) {
+    function updateData(next: State) {
         dispatch({type: "SET_PIVOT_INDEX", payload: next.pivotIndex});
         dispatch({type: "SET_CHECKING_INDEX", payload: next.checkingIndex});
     }

@@ -1,18 +1,18 @@
-import type {GraphNode} from "../types.ts";
+import type {GraphNode, GraphTraversalAction} from "../types.ts";
 import {type RefObject, useCallback, useEffect, useReducer, useRef} from "react";
 import {generateRandomGraph} from "../algorithms/graphUtils.ts";
-import useAlgorithm from "./useAlgorithm.ts";
+import useAlgorithm, {type BaseAlgorithmState} from "./useAlgorithm.ts";
 
-export type GraphTraversalState = {
-    graph: GraphNode[];
-    queuedNodes: GraphNode[];
+export type GraphTraversalState = Partial<BaseAlgorithmState> & {
+    graph: GraphNode<number>[];
+    queuedNodes: GraphNode<number>[];
     visitedNodes: Set<string>;
     popupText: string;
 };
 
-export type GraphTraversalAction =
-    | { type: "SET_GRAPH"; payload: GraphNode[] }
-    | { type: "SET_QUEUED_NODES"; payload: GraphNode[] }
+export type TraversalAction =
+    | { type: "SET_GRAPH"; payload: GraphNode<number>[] }
+    | { type: "SET_QUEUED_NODES"; payload: GraphNode<number>[] }
     | { type: "SET_VISITED_NODES"; payload: Set<string> }
     | { type: "SET_POPUP_TEXT"; payload: string };
 
@@ -23,7 +23,7 @@ const initialState: GraphTraversalState = {
     popupText: "",
 };
 
-function reducer(state: GraphTraversalState, action: GraphTraversalAction): GraphTraversalState {
+function reducer(state: GraphTraversalState, action: TraversalAction): GraphTraversalState {
     switch (action.type) {
         case "SET_GRAPH":
             return {...state, graph: action.payload};
@@ -38,8 +38,10 @@ function reducer(state: GraphTraversalState, action: GraphTraversalAction): Grap
     }
 }
 
-export function useGraphTraversal(algo: (root: GraphNode, graph: GraphNode[]) => Generator<any, void, unknown>,
-                           setAlgorithmState: (state: any, dispatch: React.Dispatch<GraphTraversalAction>, stateRef: RefObject<GraphTraversalState>) => void) {
+export type GraphHistoryState = Omit<GraphTraversalState, "graph">;
+
+export function useGraphTraversal(algo: (root: GraphNode<number>, graph: GraphNode<number>[]) => Generator<GraphTraversalAction, void, unknown>,
+                                  setAlgorithmState: (state: GraphTraversalAction, dispatch: React.Dispatch<TraversalAction>, stateRef: RefObject<GraphHistoryState>) => void) {
     const [state, dispatch] = useReducer(reducer, initialState);
     const stateRef = useRef(state);
 
@@ -55,7 +57,7 @@ export function useGraphTraversal(algo: (root: GraphNode, graph: GraphNode[]) =>
         return algo(state.graph[0], state.graph);
     }, [state.graph]);
 
-    const onStart = useCallback((_input: GraphNode, historyRef: RefObject<Array<any>>) => {
+    const onStart = useCallback((_input: GraphNode<number>, historyRef: RefObject<Array<GraphHistoryState>>) => {
         historyRef.current.push({
             queuedNodes: [],
             visitedNodes: new Set(),
@@ -63,24 +65,24 @@ export function useGraphTraversal(algo: (root: GraphNode, graph: GraphNode[]) =>
         });
     }, []);
 
-    const updateAll = useCallback((next: any) => {
+    const updateAll = useCallback((next: GraphTraversalState) => {
         dispatch({type: "SET_QUEUED_NODES", payload: next.queuedNodes});
         dispatch({type: "SET_POPUP_TEXT", payload: next.popupText});
         dispatch({type: "SET_VISITED_NODES", payload: new Set(next.visitedNodes)});
     }, []);
 
-    const onStep = useCallback((value: any, historyRef: RefObject<Array<any>>) => {
+    const onStep = useCallback((value: GraphTraversalAction, historyRef: RefObject<Array<GraphHistoryState>>) => {
         setAlgorithmStateWrapper(value);
 
         historyRef.current.push({
-            stackNodes: stateRef.current.queuedNodes,
+            queuedNodes: stateRef.current.queuedNodes,
             isDone: algorithmData.algorithmStateRef.current.isDone,
             popupText: stateRef.current.popupText,
             visitedNodes: new Set(stateRef.current.visitedNodes)
         });
     }, []);
 
-    function setAlgorithmStateWrapper(value: any) {
+    function setAlgorithmStateWrapper(value: GraphTraversalAction) {
         if (value.type === "done") {
             algorithmData.algorithmDispatch({type: "SET_DONE", payload: true});
             algorithmData.cleanupInterval();

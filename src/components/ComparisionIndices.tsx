@@ -1,6 +1,6 @@
 import {useMemo} from "react";
-import type {SampleArray} from "../../types";
 import PopupText from "./PopupText.tsx";
+import type {SampleArray} from "../types.ts";
 
 type Props = {
     array: SampleArray,

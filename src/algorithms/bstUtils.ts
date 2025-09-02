@@ -1,8 +1,8 @@
 import type {BSTNode} from "../types.ts";
 
-function insertNode(root: BSTNode | null, value: number): BSTNode {
+function insertNode(root: BSTNode<number> | null, value: number): BSTNode<number> {
     if (root === null) {
-        return { value, left: null, right: null, id: crypto.randomUUID() };
+        return {value, left: null, right: null, id: crypto.randomUUID()};
     }
     if (value < root.value) {
         root.left = insertNode(root.left, value);
@@ -13,9 +13,9 @@ function insertNode(root: BSTNode | null, value: number): BSTNode {
     return root;
 }
 
-export function generateRandomBST(size: number, min = 0, max = 100): BSTNode | null {
-    let root: BSTNode | null = null;
-    const values = Array.from({ length: size }, () =>
+export function generateRandomBST(size: number, min = 0, max = 100): BSTNode<number> | null {
+    let root: BSTNode<number> | null = null;
+    const values = Array.from({length: size}, () =>
         Math.floor(Math.random() * (max - min + 1)) + min
     );
 
@@ -26,13 +26,13 @@ export function generateRandomBST(size: number, min = 0, max = 100): BSTNode | n
     return root;
 }
 
-export function bstBfs(root: BSTNode | null): BSTNode[] {
+export function bstBfs(root: BSTNode<number> | null): BSTNode<number>[] {
     const queue = [root];
     const result = []
 
     while (queue.length > 0) {
         const node = queue.shift();
-        if(!node) {
+        if (!node) {
             break;
         }
 
