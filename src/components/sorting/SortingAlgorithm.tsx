@@ -10,7 +10,7 @@ import EndAlgorithm from "../EndAlgorithm.tsx";
 type Props = {
     name: string;
     algorithm: any;
-    makeSnapshot: () => void;
+    makeSnapshot: () => any;
     updateData: (next: any) => void;
     setAlgorithmState: (value: any) => void;
     checkingIndices?: number[];
@@ -104,12 +104,12 @@ const SortingAlgorithm = ({
                             <ArrayNode key={item.key} value={item.value} className={classNameFn(index, item.key)}></ArrayNode>
                         ))}
                     </div>
-                    <EndAlgorithm isDone={algorithmState.isDone}/>
+                    <EndAlgorithm isDone={Boolean(algorithmState.isDone)}/>
                 </div>
                 {children && children(array)}
             </div>
             <Controls stepBack={stepBack} stepForward={stepForward} toggleAlgorithm={toggleAlgorithm}
-                      firstState={algorithmState.firstState} isPaused={algorithmState.isPaused} isDone={algorithmState.isDone}></Controls>
+                      firstState={algorithmState.firstState} isPaused={algorithmState.isPaused} isDone={Boolean(algorithmState.isDone)}></Controls>
         </div>
     );
 }
