@@ -13,7 +13,33 @@ describe("quickSort", () => {
             ])
         );
 
-        expect(result).toMatchSnapshot();
+        expect(result).toMatchInlineSnapshot(`
+          {
+            "array": [
+              {
+                "key": 4,
+                "value": 1,
+              },
+              {
+                "key": 5,
+                "value": 2,
+              },
+              {
+                "key": 2,
+                "value": 3,
+              },
+              {
+                "key": 3,
+                "value": 4,
+              },
+              {
+                "key": 1,
+                "value": 5,
+              },
+            ],
+            "type": "done",
+          }
+        `);
     });
 
     it("yields correct sequence for 2 elements", () => {
@@ -30,7 +56,18 @@ describe("quickSort", () => {
         expect(compare.indices).toEqual([0, 1]);
 
         const swap = expectAction(gen.next(), "swap");
-        expect(swap.array).toMatchSnapshot();
+        expect(swap.array).toMatchInlineSnapshot(`
+          [
+            {
+              "key": 2,
+              "value": 1,
+            },
+            {
+              "key": 1,
+              "value": 3,
+            },
+          ]
+        `);
 
         const done = expectAction(gen.next(), "done");
         expect(done.array.map(a => a.value)).toEqual([1, 3]);
