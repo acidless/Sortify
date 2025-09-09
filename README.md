@@ -7,11 +7,15 @@
 Создан для обучения, объяснений, анализа и отладки алгоритмов в понятной и наглядной форме.
 
 ![React](https://img.shields.io/badge/-ReactJs-61DAFB?logo=react&logoColor=white&style=for-the-badge)
+![TypeScript](https://shields.io/badge/TypeScript-3178C6?logo=TypeScript&logoColor=FFF&style=for-the-badge)
 ![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=Vite&logoColor=white)
 
 ## 📷 Демонстрация
 
 ![Пример интерфейса](./assets/screenshot.png)
+
+Попробовать проект онлайн:  
+[![Открыть демо](https://img.shields.io/badge/Live%20Demo-Click%20Here-blue?style=for-the-badge)](https://sortify-sand.vercel.app/)
 
 ## 🚀 Возможности
 
