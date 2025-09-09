@@ -30,8 +30,7 @@ export function* dijkstra(start: GraphNode<number>, nodes: GraphNode<number>[]):
         yield {type: "visit", node: u, distance: minDist};
 
         for (const edge of u.neighbors) {
-            const v = nodes.find(n => n.id === edge.to);
-            if (!v) continue;
+            const v = nodes.find(n => n.id === edge.to)!;
 
             const alt = dist.get(u.id)! + edge.weight;
             const old = dist.get(v.id)!;

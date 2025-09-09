@@ -1,4 +1,3 @@
-import {describe, it, expect} from "vitest";
 import {generateRandomArray} from "../arrayUtils.ts";
 
 describe("arrayUtils", () => {

@@ -14,7 +14,7 @@ const Tabs = ({tabs}: TabsProps) => {
 
     return <div>
         <div className="flex gap-4 cursor-pointer justify-center border-b border-gray-700">
-            {tabs.map((tab, i) => (<div onClick={() => setActiveTab(i)} className={`px-4 py-2 transition-colors ${
+            {tabs.map((tab, i) => (<div onClick={() => setActiveTab(i)} key={tab.name} className={`px-4 py-2 transition-colors ${
                 i === activeTab
                     ? "border-b-2 border-green-400 text-green-400 font-bold"
                     : "text-gray-400 hover:text-white"
@@ -23,7 +23,7 @@ const Tabs = ({tabs}: TabsProps) => {
             </div>))}
         </div>
         <div className="pt-4">
-            {tabs[activeTab].content}
+            {activeTab < tabs.length ? tabs[activeTab].content : ""}
         </div>
     </div>;
 }
