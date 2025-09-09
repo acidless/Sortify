@@ -1,10 +1,10 @@
-import {bubbleSort} from "../bubbleSort.ts";
 import {expectAction, runToEnd} from "./testUtils.ts";
+import {mergeSort} from "../mergeSort.ts";
 
-describe("bubbleSort", () => {
-    it("bubbleSort sorts unsorted array", () => {
+describe("mergeSort", () => {
+    it("mergeSort sorts unsorted array", () => {
         const result = runToEnd(
-            bubbleSort([
+            mergeSort([
                 { key: 1, value: 4 },
                 { key: 2, value: 2 },
                 { key: 3, value: 3 },
@@ -16,15 +16,20 @@ describe("bubbleSort", () => {
     });
 
     it("yields correct sequence for 2 elements", () => {
-        const gen = bubbleSort([
+        const gen = mergeSort([
             { key: 1, value: 3 },
             { key: 2, value: 1 },
         ]);
 
-        expectAction(gen.next(), "compare");
-        const swap = expectAction(gen.next(), "swap");
-        expect(swap.indices).toEqual([0, 1]);
-        expect(swap.array.map(a => a.value)).toEqual([1, 3]);
+        const slice = expectAction(gen.next(), "slice");
+        expect(slice.left).toEqual([{key: 1, value: 3}]);
+        expect(slice.right).toEqual([{key: 2, value: 1}]);
+
+        const compare = expectAction(gen.next(), "compare");
+        expect(compare.indices).toEqual([0, 1]);
+
+        const overwrite = expectAction(gen.next(), "overwrite");
+        expect(overwrite.array).toMatchSnapshot();
 
         const done = expectAction(gen.next(), "done");
         expect(done.array.map(a => a.value)).toEqual([1, 3]);
@@ -33,16 +38,17 @@ describe("bubbleSort", () => {
     });
 
     it("empty array", () => {
-        const done = expectAction(bubbleSort([]).next(), "done");
+        const done = expectAction(mergeSort([]).next(), "done");
         expect(done.array).toEqual([]);
     });
 
     it("already sorted array", () => {
-        const gen = bubbleSort([
+        const gen = mergeSort([
             { key: 1, value: 1 },
             { key: 2, value: 2 },
         ]);
 
+        expectAction(gen.next(), "slice");
         expectAction(gen.next(), "compare");
         const done = expectAction(gen.next(), "done");
         expect(done.array.map(a => a.value)).toEqual([1, 2]);

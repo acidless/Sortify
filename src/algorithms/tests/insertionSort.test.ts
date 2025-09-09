@@ -1,10 +1,10 @@
-import {bubbleSort} from "../bubbleSort.ts";
 import {expectAction, runToEnd} from "./testUtils.ts";
+import {insertionSort} from "../insertionSort.ts";
 
-describe("bubbleSort", () => {
-    it("bubbleSort sorts unsorted array", () => {
+describe("insertionSort", () => {
+    it("insertionSort sorts unsorted array", () => {
         const result = runToEnd(
-            bubbleSort([
+            insertionSort([
                 { key: 1, value: 4 },
                 { key: 2, value: 2 },
                 { key: 3, value: 3 },
@@ -16,14 +16,16 @@ describe("bubbleSort", () => {
     });
 
     it("yields correct sequence for 2 elements", () => {
-        const gen = bubbleSort([
+        const gen = insertionSort([
             { key: 1, value: 3 },
             { key: 2, value: 1 },
         ]);
 
-        expectAction(gen.next(), "compare");
-        const swap = expectAction(gen.next(), "swap");
-        expect(swap.indices).toEqual([0, 1]);
+        expectAction(gen.next(), "key");
+        expectAction(gen.next(), "checking");
+        expectAction(gen.next(), "checking");
+        const swap = expectAction(gen.next(), "insert");
+        expect(swap.array).toMatchSnapshot();
         expect(swap.array.map(a => a.value)).toEqual([1, 3]);
 
         const done = expectAction(gen.next(), "done");
@@ -33,17 +35,19 @@ describe("bubbleSort", () => {
     });
 
     it("empty array", () => {
-        const done = expectAction(bubbleSort([]).next(), "done");
+        const done = expectAction(insertionSort([]).next(), "done");
         expect(done.array).toEqual([]);
     });
 
     it("already sorted array", () => {
-        const gen = bubbleSort([
+        const gen = insertionSort([
             { key: 1, value: 1 },
             { key: 2, value: 2 },
         ]);
 
-        expectAction(gen.next(), "compare");
+        expectAction(gen.next(), "key");
+        expectAction(gen.next(), "checking");
+        expectAction(gen.next(), "insert");
         const done = expectAction(gen.next(), "done");
         expect(done.array.map(a => a.value)).toEqual([1, 2]);
         expect(gen.next().done).toBe(true);

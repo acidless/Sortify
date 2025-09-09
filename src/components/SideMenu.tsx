@@ -19,14 +19,14 @@ function SideMenu() {
 
     return (
         <>
-            <button onClick={() => setIsMenuOpen(true)}
+            <button aria-label="open-menu" onClick={() => setIsMenuOpen(true)}
                     className="cursor-pointer absolute top-4 left-4 2xl:hidden z-50 bg-neutral-700 hover:bg-neutral-800 transition-colors duration-300 w-12 h-12 rounded-2xl flex items-center justify-center">
                 <Menu className="w-8 h-8"></Menu>
             </button>
             <aside
                 className={`max-w-sm w-full h-full pt-4 px-8 border-r border-b dark-bg z-100 overflow-auto transition-all duration-300 border-neutral-700 2xl:sticky fixed ${isMenuOpen ? "left-0" : "-left-full"}`}>
                 <h2 className="font-bold text-3xl mb-10">Выбор алгоритма</h2>
-                <button onClick={() => setIsMenuOpen(false)}
+                <button aria-label="close-menu" onClick={() => setIsMenuOpen(false)}
                         className="cursor-pointer absolute top-4 right-4 2xl:hidden block">
                     <X className="w-8 h-8"></X>
                 </button>

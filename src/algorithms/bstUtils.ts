@@ -15,9 +15,11 @@ function insertNode(root: BSTNode<number> | null, value: number): BSTNode<number
 
 export function generateRandomBST(size: number, min = 0, max = 100): BSTNode<number> | null {
     let root: BSTNode<number> | null = null;
-    const values = Array.from({length: size}, () =>
-        Math.floor(Math.random() * (max - min + 1)) + min
-    );
+    const values = new Set<number>();
+    while (values.size < size) {
+        const val = Math.floor(Math.random() * (max - min + 1)) + min;
+        values.add(val);
+    }
 
     for (const value of values) {
         root = insertNode(root, value);
