@@ -1,7 +1,7 @@
 import {forwardRef} from "react";
 
 type Props = {
-    node: number;
+    node: string;
     id: string;
     x: number;
     y: number;

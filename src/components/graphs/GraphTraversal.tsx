@@ -44,7 +44,7 @@ const GraphTraversal = ({algorithm, setAlgorithmState, title}: Props) => {
             <div className="flex-1 self-stretch flex flex-col justify-center items-center relative mt-24">
                 <PopupText id={traversalState.popupText} text={traversalState.popupText}/>
                 <Graph nodes={traversalState.graph} nodeStateFunc={nodeStateFunc}/>
-                <EndAlgorithm isDone={useAlgorithmData.algorithmState.isDone} bottom="bottom-12"/>
+                <EndAlgorithm isDone={useAlgorithmData.algorithmState.isDone!} bottom="bottom-12"/>
             </div>
             <Controls
                 stepBack={useAlgorithmData.stepBack}
@@ -52,7 +52,7 @@ const GraphTraversal = ({algorithm, setAlgorithmState, title}: Props) => {
                 toggleAlgorithm={useAlgorithmData.toggleAlgorithm}
                 firstState={useAlgorithmData.algorithmState.firstState}
                 isPaused={useAlgorithmData.algorithmState.isPaused}
-                isDone={useAlgorithmData.algorithmState.isDone}
+                isDone={useAlgorithmData.algorithmState.isDone!}
             />
         </div>
     );

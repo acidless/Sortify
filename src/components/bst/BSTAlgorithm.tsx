@@ -32,13 +32,13 @@ const BSTAlgorithm = ({algo, setAlgorithmState, startBST, title}: Props) => {
             <PopupText id={state.popupText} text={state.popupText}/>
             {state.bstNodes.length ? <BinarySearchTree nodeStateFunc={nodeStateFunc} root={state.bstNodes[0]}
                                                        size={state.bstNodes.length}></BinarySearchTree> : null}
-            <EndAlgorithm isDone={useAlgorithmData.algorithmState.isDone} bottom="bottom-12"/>
+            <EndAlgorithm isDone={useAlgorithmData.algorithmState.isDone!} bottom="bottom-12"/>
         </div>
         <Controls stepBack={useAlgorithmData.stepBack} stepForward={useAlgorithmData.stepForward}
                   toggleAlgorithm={useAlgorithmData.toggleAlgorithm}
                   firstState={useAlgorithmData.algorithmState.firstState}
                   isPaused={useAlgorithmData.algorithmState.isPaused}
-                  isDone={useAlgorithmData.algorithmState.isDone}></Controls>
+                  isDone={useAlgorithmData.algorithmState.isDone!}></Controls>
     </div>
 }
 

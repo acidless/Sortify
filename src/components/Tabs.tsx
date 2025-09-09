@@ -2,7 +2,7 @@ import {useState} from "react";
 
 type Tab = {
     name: string;
-    content: JSX.Element;
+    content: React.ReactNode;
 }
 
 type TabsProps = {

@@ -15,7 +15,7 @@ type Props = {
     setAlgorithmState: (value: any) => void;
     checkingIndices?: number[];
     classNameFn: (index: number, key: number) => string | undefined;
-    children?: (array: SampleArray) => JSX.Element;
+    children?: (array: SampleArray) => React.ReactNode;
 }
 
 const SortingAlgorithm = ({

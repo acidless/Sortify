@@ -1,10 +1,11 @@
 import {type RefObject, useContext, useEffect} from "react";
-import type {BSTOperationAction, BSTOperationState} from "../../hooks/useBSTOperation.ts";
+import type {BSTHistoryState, BSTOperationAction} from "../../hooks/useBSTOperation.ts";
 import BSTAlgorithm from "./BSTAlgorithm.tsx";
 import {bstBfs, generateRandomBST} from "../../algorithms/bstUtils.ts";
-import {bstSearch, type BSTSearchAction} from "../../algorithms/bstSearch.ts";
+import {bstSearch} from "../../algorithms/bstSearch.ts";
 import {TheoryContext} from "../../TheoryContext.ts";
 import Tabs from "../Tabs.tsx";
+import type {BSTAction} from "../../types.ts";
 
 function BSTSearchTheory() {
     return <>
@@ -105,7 +106,7 @@ function BSTSearch() {
         setTheory(<BSTSearchText/>);
     }, []);
 
-    function setAlgorithmState(value: BSTSearchAction, dispatch: React.Dispatch<BSTOperationAction>, stateRef: RefObject<BSTOperationState>, makeComparison: (a: number, b: number) => string) {
+    function setAlgorithmState(value: BSTAction, dispatch: React.Dispatch<BSTOperationAction>, stateRef: RefObject<BSTHistoryState>, makeComparison: (a: number, b: number) => string) {
         switch (value.type) {
             case "compare":
                 dispatch({

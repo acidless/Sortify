@@ -106,7 +106,7 @@ const BinarySearchTree = ({ root, nodeStateFunc, size }: Props) =>  {
                 <BSTNode
                     key={node.id}
                     id={node.id}
-                    node={node.value}
+                    node={node.value.toString()}
                     x={node.x}
                     y={node.y}
                     stateFunc={nodeStateFunc}

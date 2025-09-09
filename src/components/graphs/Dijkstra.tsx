@@ -285,7 +285,7 @@ function Dijkstra() {
             <div className="flex-1 self-stretch flex flex-col justify-center items-center relative mt-24">
                 <PopupText id={state.popupText} text={state.popupText}/>
                 <Graph nodes={state.graph} distances={state.distances} directed={true} weighted={true} nodeStateFunc={nodeStateFunc}/>
-                <EndAlgorithm isDone={algorithmState.isDone} bottom="bottom-12"/>
+                <EndAlgorithm isDone={algorithmState.isDone!} bottom="bottom-12"/>
             </div>
             <Controls
                 stepBack={stepBack}
@@ -293,7 +293,7 @@ function Dijkstra() {
                 toggleAlgorithm={toggleAlgorithm}
                 firstState={algorithmState.firstState}
                 isPaused={algorithmState.isPaused}
-                isDone={algorithmState.isDone}
+                isDone={algorithmState.isDone!}
             />
         </div>
     );
