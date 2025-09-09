@@ -28,6 +28,13 @@ cd sortify
 npm install
 ```
 
+## ✅ Статус проекта
+
+- Покрытие тестами: ![Coverage](https://img.shields.io/codecov/c/github/acidless/Sortify/master?style=flat)
+- Последние тесты: ![Build](https://img.shields.io/github/actions/workflow/status/acidless/Sortify/main.yml?branch=master&style=flat)
+
+![Coverage Graph](https://codecov.io/github/acidless/Sortify/graphs/sunburst.svg?token=NTHQY7GDNM)
+
 ## 📝 Лицензия
 
 Этот проект распространяется под лицензией MIT.
