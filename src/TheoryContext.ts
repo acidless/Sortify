@@ -1,5 +1,5 @@
 import {createContext} from "react";
 
-export const TheoryContext = createContext<{theory: JSX.Element | null, setTheory: (markup: JSX.Element) => void}>({
-    theory: null, setTheory: (markup: JSX.Element) => {}
+export const TheoryContext = createContext<{theory: React.ReactNode | null, setTheory: (markup: React.ReactNode) => void}>({
+    theory: null, setTheory: () => {}
 });

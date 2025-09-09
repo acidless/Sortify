@@ -5,7 +5,7 @@ import Theory from "./Theory.tsx";
 import {useState} from "react";
 
 function Layout() {
-    const [theory, setTheory] = useState(null);
+    const [theory, setTheory] = useState<React.ReactNode | null>(null);
 
     return <div className="flex h-max min-h-full overflow-x-hidden">
         <TheoryContext.Provider value={{theory, setTheory}}>

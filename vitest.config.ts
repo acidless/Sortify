@@ -7,6 +7,7 @@ export default defineConfig({
         setupFiles: './setupTests.ts',
         coverage: {
             provider: 'v8',
+            reporter: ["text", "lcov"],
             exclude: [...coverageConfigDefaults.exclude, '*.config.{ts,js}'],
         },
     },

@@ -41,7 +41,7 @@ function reducer(state: BSTOperationState, action: BSTOperationAction): BSTOpera
     }
 }
 
-export type BSTHistoryState = Omit<BSTOperationState, "targetNumber" | "bstNodes">;
+export type BSTHistoryState = BSTOperationState;
 
 export function useBSTOperation(algo: (input: BSTNode<number>, target: number) => Generator<BSTAction, void, unknown>,
                                 setAlgorithmState: (state: BSTAction, dispatch: React.Dispatch<BSTOperationAction>, stateRef: RefObject<BSTOperationState>, makeComparison: (a: number, b: number) => string) => void,
@@ -73,7 +73,9 @@ export function useBSTOperation(algo: (input: BSTNode<number>, target: number) =
             checkingNode: null,
             resultNode: null,
             isDone: false,
-            popupText: ""
+            popupText: "",
+            targetNumber: 0,
+            bstNodes: [],
         }];
     }, []);
 
@@ -90,7 +92,9 @@ export function useBSTOperation(algo: (input: BSTNode<number>, target: number) =
             checkingNode: stateRef.current.checkingNode,
             resultNode: stateRef.current.resultNode,
             isDone: algorithmData.algorithmStateRef.current.isDone,
-            popupText: stateRef.current.popupText
+            popupText: stateRef.current.popupText,
+            targetNumber: stateRef.current.targetNumber,
+            bstNodes: stateRef.current.bstNodes,
         });
     }, [state.targetNumber]);
 

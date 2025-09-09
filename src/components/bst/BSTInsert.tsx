@@ -1,9 +1,10 @@
 import BSTAlgorithm from "./BSTAlgorithm.tsx";
-import type {BSTOperationAction, BSTOperationState} from "../../hooks/useBSTOperation.ts";
+import type {BSTHistoryState, BSTOperationAction} from "../../hooks/useBSTOperation.ts";
 import {type RefObject, useContext, useEffect} from "react";
-import {bstInsert, type BSTInsertAction} from "../../algorithms/bstInsert.ts";
+import {bstInsert} from "../../algorithms/bstInsert.ts";
 import {TheoryContext} from "../../TheoryContext.ts";
 import Tabs from "../Tabs.tsx";
+import type {BSTAction} from "../../types.ts";
 
 const node = {value: 10, id: crypto.randomUUID(), left: null, right: null};
 
@@ -107,7 +108,7 @@ function BSTInsert() {
         setTheory(<BSTInsertText/>);
     }, []);
 
-    function setAlgorithmState(value: BSTInsertAction, dispatch: React.Dispatch<BSTOperationAction>, stateRef: RefObject<BSTOperationState>, makeComparison: (a: number, b: number) => string) {
+    function setAlgorithmState(value: BSTAction, dispatch: React.Dispatch<BSTOperationAction>, stateRef: RefObject<BSTHistoryState>, makeComparison: (a: number, b: number) => string) {
         switch (value.type) {
             case "compare":
                 dispatch({
