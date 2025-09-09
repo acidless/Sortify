@@ -33,6 +33,8 @@ main::before {
 }
 
 .orientation-vertical {
-    writing-mode: sideways-lr;
-    text-orientation: mixed;
+    -webkit-writing-mode: vertical-lr;
+    writing-mode: vertical-lr;
+    -webkit-text-orientation: upright;
+    text-orientation: upright;
 }
