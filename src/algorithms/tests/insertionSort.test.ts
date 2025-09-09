@@ -12,7 +12,29 @@ describe("insertionSort", () => {
             ])
         );
 
-        expect(result).toMatchSnapshot();
+        expect(result).toMatchInlineSnapshot(`
+          {
+            "array": [
+              {
+                "key": 4,
+                "value": 1,
+              },
+              {
+                "key": 2,
+                "value": 2,
+              },
+              {
+                "key": 3,
+                "value": 3,
+              },
+              {
+                "key": 1,
+                "value": 4,
+              },
+            ],
+            "type": "done",
+          }
+        `);
     });
 
     it("yields correct sequence for 2 elements", () => {
@@ -25,7 +47,18 @@ describe("insertionSort", () => {
         expectAction(gen.next(), "checking");
         expectAction(gen.next(), "checking");
         const swap = expectAction(gen.next(), "insert");
-        expect(swap.array).toMatchSnapshot();
+        expect(swap.array).toMatchInlineSnapshot(`
+          [
+            {
+              "key": 2,
+              "value": 1,
+            },
+            {
+              "key": 1,
+              "value": 3,
+            },
+          ]
+        `);
         expect(swap.array.map(a => a.value)).toEqual([1, 3]);
 
         const done = expectAction(gen.next(), "done");
