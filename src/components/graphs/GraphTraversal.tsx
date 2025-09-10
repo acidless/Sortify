@@ -19,10 +19,11 @@ type Props = {
 }
 
 const GraphTraversal = ({algorithm, setAlgorithmState, title}: Props) => {
-    const {traversalState, useAlgorithmData, nodeStateFunc, dispatch} = useGraphTraversal(algorithm, setAlgorithmState);
+    const {traversalState, useAlgorithmData, nodeStateFunc, dispatch, reset} = useGraphTraversal(algorithm, setAlgorithmState);
 
     function randomGraph() {
         dispatch({type: "SET_GRAPH", payload: generateRandomGraph(6)});
+        reset();
     }
 
     return (

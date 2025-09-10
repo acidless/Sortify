@@ -31,7 +31,10 @@ const BSTInput = ({operationLabel, onOperation, onOperationChange, setBST}: Prop
 
     function handleOperation(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
-        onOperation(parseNumber(inputOperation));
+        const value = parseNumber(inputOperation);
+        if(!isNaN(value)) {
+            onOperation(value);
+        }
     }
 
     function randomBst() {
