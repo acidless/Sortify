@@ -1,5 +1,5 @@
 import type {GraphNode, GraphTraversalAction} from "../types.ts";
-import {type RefObject, useCallback, useEffect, useReducer, useRef} from "react";
+import {type RefObject, useCallback, useEffect, useMemo, useReducer, useRef} from "react";
 import {generateRandomGraph} from "../algorithms/graphUtils.ts";
 import useAlgorithm, {type BaseAlgorithmState} from "./useAlgorithm.ts";
 
@@ -53,11 +53,12 @@ export function useGraphTraversal(algo: (root: GraphNode<number>, graph: GraphNo
         stateRef.current = state;
     }, [state]);
 
-    const algorithm = useCallback(() => {
-        return algo(state.graph[0], state.graph);
-    }, [state.graph]);
+    const algorithm = useMemo(() => {
+        return () => algo(state.graph[0], state.graph);
+    }, [algo, state.graph]);
 
     const onStart = useCallback((_input: GraphNode<number>, historyRef: RefObject<Array<GraphHistoryState>>) => {
+        historyRef.current = [];
         historyRef.current.push({
             queuedNodes: [],
             visitedNodes: new Set(),
@@ -99,12 +100,18 @@ export function useGraphTraversal(algo: (root: GraphNode<number>, graph: GraphNo
         return "border-neutral-700";
     }
 
+    function reset() {
+        dispatch({type: "SET_QUEUED_NODES", payload: []});
+        dispatch({type: "SET_VISITED_NODES", payload: new Set()});
+    }
+
     const algorithmData = useAlgorithm(algorithm, updateAll, onStart, onStep);
 
     return {
         traversalState: state,
         useAlgorithmData: algorithmData,
         dispatch,
-        nodeStateFunc
+        nodeStateFunc,
+        reset
     };
 }
