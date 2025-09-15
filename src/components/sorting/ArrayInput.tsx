@@ -24,9 +24,6 @@ const ArrayInput = ({onInputChange, onSubmit}: Props) => {
             if (e instanceof Error) {
                 setValidationError(e.message);
                 console.error(e);
-            } else {
-                setValidationError("Неизвестная ошибка");
-                console.error(e);
             }
             
             return [];
@@ -59,11 +56,11 @@ const ArrayInput = ({onInputChange, onSubmit}: Props) => {
                            value={input} onChange={handleInputChange}
                            placeholder="[3, 5, 1, 2]" type="text" autoComplete="off"/>
                     <div className="flex items-center gap-1">
-                        <button type="button" onClick={randomSubmit}
+                        <button type="button" onClick={randomSubmit} aria-label="random-array"
                                 className="bg-green-600 hover:bg-green-700 font-bold py-2 px-4 rounded cursor-pointer">
                             <Dices></Dices>
                         </button>
-                        <button type="submit"
+                        <button type="submit" aria-label="submit-array"
                                 className="bg-green-600 hover:bg-green-700 font-bold py-2 px-4 rounded cursor-pointer">
                             <Play></Play>
                         </button>

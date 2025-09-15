@@ -4,28 +4,28 @@ import type {SampleArray} from "../types.ts";
 
 type Props = {
     array: SampleArray,
-    indecies: number[] | undefined,
+    indices: number[] | undefined,
 };
 
-const ComparisionIndices = ({array, indecies}: Props) => {
-    const comparisonLine = useMemo(() => makeComparisonLine(), [indecies]);
+const ComparisionIndices = ({array, indices}: Props) => {
+    const comparisonLine = useMemo(() => makeComparisonLine(), [indices]);
 
     function makeComparisonLine() {
-        if (!indecies) return "";
+        if (!indices) return "";
 
-        const a = array[indecies[0]].value;
-        if (indecies[1] < 0) {
+        const a = array[indices[0]].value;
+        if (indices[1] < 0) {
             return `${a} минимальное`;
         }
 
-        const b = array[indecies[1]].value;
+        const b = array[indices[1]].value;
         const sign = a > b ? ">" : a < b ? "<" : "=";
         return `${a} ${sign} ${b}`;
     }
 
     return (
         <>
-            {indecies && <PopupText id={indecies.join("-")} text={comparisonLine}/>}
+            {indices && <PopupText id={indices.join("-")} text={comparisonLine}/>}
         </>
     )
 }

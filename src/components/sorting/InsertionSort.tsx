@@ -24,8 +24,6 @@ function reducer(state: State, action: Action): State {
             return {...state, pivotIndex: action.payload};
         case "SET_CHECKING_INDEX":
             return {...state, checkingIndex: action.payload};
-        default:
-            return state;
     }
 }
 
