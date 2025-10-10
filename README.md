@@ -15,7 +15,7 @@
 ![Пример интерфейса](./assets/screenshot.png)
 
 Попробовать проект онлайн:  
-[![Открыть демо](https://img.shields.io/badge/Live%20Demo-Click%20Here-blue?style=for-the-badge)](https://business-dashboard-one-eta.vercel.app/)
+[![Открыть демо](https://img.shields.io/badge/Live%20Demo-Click%20Here-blue?style=for-the-badge)](https://sortify-sand.vercel.app)
 
 ## 🚀 Возможности
 
