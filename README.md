@@ -1,30 +1,30 @@
-# 🧠 Sortify — Интерактивный визуализатор алгоритмов
+# 🧠 Sortify — Interactive algorithm visualizer
 
-**Sortify** — это веб-приложение для пошаговой визуализации алгоритмов, включая:
-- 📊 **Сортировки** (Insertion, Bubble, Merge…)
-- 🌳 **Двоичные деревья поиска**
-- 🕸️ **Алгоритмы на графах** (DFS, BFS, Dijkstra…)
-Создан для обучения, объяснений, анализа и отладки алгоритмов в понятной и наглядной форме.
+**Sortify** is a web application for step-by-step algorithm visualization, including:
+- 📊 **Sorting** (Insertion, Bubble, Merge, Quick)
+- 🌳 **Binary search trees**
+- 🕸️ **Graph algorithms** (DFS, BFS, Dijkstra)
+Created for studying, explaining, analyzing, and debugging algorithms in an understandable and visual way.
 
 ![React](https://img.shields.io/badge/-ReactJs-61DAFB?logo=react&logoColor=white&style=for-the-badge)
 ![TypeScript](https://shields.io/badge/TypeScript-3178C6?logo=TypeScript&logoColor=FFF&style=for-the-badge)
 ![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=Vite&logoColor=white)
 
-## 📷 Демонстрация
+## 📷 Demo
 
-![Пример интерфейса](./assets/screenshot.png)
+![UI](./assets/screenshot.png)
 
-Попробовать проект онлайн:  
-[![Открыть демо](https://img.shields.io/badge/Live%20Demo-Click%20Here-blue?style=for-the-badge)](https://sortify-sand.vercel.app)
+Try Sortify online:  
+[![Open demo](https://img.shields.io/badge/Live%20Demo-Click%20Here-blue?style=for-the-badge)](https://sortify-sand.vercel.app)
 
-## 🚀 Возможности
+## 🚀 Features
 
-- 🎞️ **Пошаговая визуализация** с анимацией
-- ⏸️ **Пауза / Возобновление** алгоритма
-- ⬅️➡️ **Шаг назад / вперёд**
-- 📚 **Описание каждого шага**: наглядно объясняет, что происходит
+- 🎞️ **step-by-step visualization** with animations
+- ⏸️ **Pause/Resume** algorithm
+- ⬅️➡️ **Step back/forward**
+- 📚 **Description of each step**: clearly explains what is happening
 
-## 🛠 Установка
+## 🛠 Installation
 
 ```bash
 git clone https://github.com/acidless/sortify.git
@@ -32,13 +32,13 @@ cd sortify
 npm install
 ```
 
-## ✅ Статус проекта
+## ✅ Project status
 
-- Покрытие тестами: ![Coverage](https://img.shields.io/codecov/c/github/acidless/Sortify/master?style=flat)
-- Последние тесты: ![Build](https://img.shields.io/github/actions/workflow/status/acidless/Sortify/main.yml?branch=master&style=flat)
+- Test coverage: ![Coverage](https://img.shields.io/codecov/c/github/acidless/Sortify/master?style=flat)
+- Last tests: ![Build](https://img.shields.io/github/actions/workflow/status/acidless/Sortify/main.yml?branch=master&style=flat)
 
 ![Coverage Graph](https://codecov.io/github/acidless/Sortify/graphs/sunburst.svg?token=NTHQY7GDNM)
 
-## 📝 Лицензия
+## 📝 License
 
-Этот проект распространяется под лицензией MIT.
+This project is distributed under the MIT license.
